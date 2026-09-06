@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no" ?>
+<svg width="143px" height="82px" viewBox="-23.09 -42.50 142.51 81.95" style="background-color: #ffffff00" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 0.00,12.75 L 22.08,0.00 L 44.17,12.75 L 66.25,0.00 L 80.76,8.38" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 95.91,8.38 L 110.42,0.00" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 66.25,0.00 L 66.25,-16.54" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 61.15,-2.00 L 61.15,-14.54" />
+<text x="66.25" y="-19.90" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle">O</text>
+<text x="88.33" y="18.35" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle">O</text>
+<text x="66.25" y="14.70" fill="#ff0000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">1</text>
+<text x="44.17" y="27.45" fill="#ff0000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">2</text>
+<text x="22.08" y="-6.30" fill="#ff0000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">3</text>
+<text x="-9.09" y="22.20" fill="#ff0000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">4</text>
+</svg>

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · ChemFlashcards</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="v2-style.css">
+  <!-- SheetJS (xlsx), vendored locally. Powers the "Download all (Excel)"
+       multi-tab workbook button. -->
+  <script src="vendor/xlsx.full.min.js" defer></script>
+  <style>
+    /* Admin panel layout. Lab-facing only; clean but utilitarian. All colors
+       use tokens so the page tracks the same theme toggle as the rest of
+       the site. */
+    .admin-wrap {
+      max-width: 880px;
+      margin: var(--space-2xl) auto;
+      padding: 0 var(--space-md);
+    }
+    .admin-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--space-2xs);
+      color: var(--color-text);
+    }
+    .admin-subtitle {
+      color: var(--color-muted);
+      margin: 0 0 var(--space-lg);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .admin-card { padding: var(--space-lg); }
+    .admin-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+    .admin-row--single { grid-template-columns: 1fr; }
+    .admin-actions {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+      margin-top: var(--space-md);
+    }
+
+    /* Output block. The exported JSON or CSV preview, on the cream or eclipse
+       background. */
+    .admin-output {
+      margin-top: var(--space-lg);
+      padding: var(--space-md);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-2);
+      border-radius: var(--radius-md);
+      max-height: 600px;
+      overflow: auto;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      white-space: pre;
+      line-height: 1.55;
+      color: var(--color-text);
+    }
+    .admin-output[hidden] { display: none; }
+    .admin-output--ok    { border-color: var(--color-green); }
+    .admin-output--error { border-color: var(--color-red); color: var(--color-red); }
+    .admin-meta { margin-top: var(--space-xs); color: var(--color-muted); font-size: 0.85rem; }
+
+    /* Edit-requests review panel (tester feedback). */
+    .admin-feedback { margin-top: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); }
+    .admin-feedback[hidden] { display: none; }
+    .fb-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); color: var(--color-muted); font-size: 0.85rem; }
+    .fb-card { border: 1px solid var(--color-border-2); border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md); background: var(--color-bg); }
+    .fb-card--done { opacity: 0.55; }
+    .fb-card__meta { font-size: 0.85rem; color: var(--color-muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: var(--space-2xs); }
+    .fb-card__meta strong { color: var(--color-text); }
+    .fb-card__meta code { font-family: var(--font-mono); font-size: 0.8em; }
+    .fb-card__meta .btn { margin-left: auto; }
+    .fb-pins { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2xs); }
+    .fb-pins li { padding: var(--space-2xs) 0; border-top: 1px dashed var(--color-border-2); }
+    .fb-pins li:first-child { border-top: 0; }
+    .fb-pin--done { text-decoration: line-through; opacity: 0.6; }
+    .fb-note { color: var(--color-text); font-size: 0.92rem; }
+    .fb-ctx { color: var(--color-muted); font-size: 0.78rem; margin-top: 2px; word-break: break-word; }
+    .fb-sel { font-family: var(--font-mono); font-size: 0.92em; opacity: 0.8; }
+    .fb-err { color: var(--color-red); }
+
+    /* The "restricted access" banner. Tokenized amber, so it tracks the
+       theme. */
+    .admin-banner {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-yellow-dim);
+      border: 1px solid color-mix(in srgb, var(--color-yellow) 50%, transparent);
+      border-left-width: 4px;
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin-bottom: var(--space-lg);
+    }
+    .admin-banner strong { color: var(--color-yellow); }
+    .admin-banner code {
+      background: color-mix(in srgb, var(--color-yellow) 12%, transparent);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+    }
+
+    .admin-token-row { display: flex; gap: var(--space-xs); align-items: end; }
+    .admin-token-row .field { flex: 1; }
+    .admin-token-toggle {
+      min-height: 44px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      align-self: stretch;
+    }
+
+    @media (max-width: 540px) {
+      .admin-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a href="index.html" class="topbar__logo">ChemFlashcards</a>
+      <nav class="topbar__nav">
+        <a href="study.html" class="btn btn--ghost btn--sm">Study app</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <h1 class="admin-title">Researcher export</h1>
+    <p class="admin-subtitle">Pull a participant's full data (enrollment + sessions + trials) as JSON or CSV.</p>
+
+    <div class="admin-banner">
+      <strong>Restricted access.</strong> This page requires the <code>EXPORT_TOKEN</code> bearer token to fetch any data.
+      Save your token here for convenience, or paste it each time. It is stored only in your browser's localStorage
+      and never sent anywhere except in the Authorization header to the worker.
+    </div>
+
+    <section class="card admin-card">
+      <div class="card__body" style="padding-top: 0;">
+
+        <div class="admin-row admin-row--single">
+          <div class="field">
+            <label class="field__label" for="adminPid">Participant ID</label>
+            <input id="adminPid" class="field__input" type="text" inputmode="text"
+              placeholder="e.g. 03-12345 or 01-DEV01" autocomplete="off">
+            <span class="field__hint">The PID exactly as it was assigned. Case-sensitive.</span>
+          </div>
+        </div>
+
+        <div class="admin-row">
+          <div class="field">
+            <label class="field__label" for="adminFormat">Format</label>
+            <select id="adminFormat" class="field__input field__input--select">
+              <option value="json">JSON (display inline)</option>
+              <option value="csv">CSV (download file)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="adminRemember">Remember token</label>
+            <select id="adminRemember" class="field__input field__input--select">
+              <option value="1">Save token to localStorage</option>
+              <option value="0">Do not save</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-token-row">
+          <div class="field">
+            <label class="field__label" for="adminToken">Bearer token</label>
+            <input id="adminToken" class="field__input" type="password"
+              placeholder="EXPORT_TOKEN value" autocomplete="off">
+          </div>
+          <button id="adminTokenToggle" class="btn btn--ghost admin-token-toggle" type="button">Show</button>
+        </div>
+
+        <p class="warn" id="adminWarn" hidden></p>
+
+        <div class="admin-actions">
+          <button id="adminFetchBtn" class="btn btn--primary" type="button">Fetch</button>
+          <button id="adminListBtn" class="btn btn--ghost" type="button" title="Show who's enrolled and how many sessions each has completed">List participants</button>
+          <button id="adminFeedbackBtn" class="btn btn--ghost" type="button" title="Show edit requests submitted by testers on the pages">Edit requests</button>
+          <button id="adminFetchAllBtn" class="btn btn--ghost" type="button" title="Download one Excel workbook (.xlsx) with four tabs: Trials, Ease ratings, Predictions, Forced choices. The three CSV buttons to the right grab a single table each.">Download all (Excel)</button>
+          <button id="adminFamBtn" class="btn btn--ghost" type="button" title="Bulk download every participant's familiarity / 'easy to learn' ratings (1-7), including the Session 0 tutorial topic ratings, as one CSV">Ease ratings (CSV)</button>
+          <button id="adminPredBtn" class="btn btn--ghost" type="button" title="Bulk download every participant's pre-session predictions (0-12 items) as one CSV">Predictions (CSV)</button>
+          <button id="adminFcBtn" class="btn btn--ghost" type="button" title="Bulk download every participant's forced-choice judgements (Set A vs Set B) as one CSV">Forced choices (CSV)</button>
+          <button id="adminForgetBtn" class="btn btn--ghost" type="button">Forget saved token</button>
+          <button id="adminCopyBtn" class="btn btn--ghost" type="button" hidden>Copy output</button>
+        </div>
+
+        <p class="admin-meta" id="adminMeta" hidden></p>
+        <pre class="admin-output" id="adminOutput" hidden></pre>
+        <div class="admin-feedback" id="adminFeedback" hidden></div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ── Theme toggle parity with the rest of the site ────────────────────────
+    (function() {
+      var root = document.documentElement;
+      var stored = localStorage.getItem('cfc-theme');
+      root.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
+    })();
+  </script>
+
+  <script type="module">
+    const TOKEN_KEY = "cfc-v2-export-token";
+
+    const $pid     = document.getElementById("adminPid");
+    const $token   = document.getElementById("adminToken");
+    const $format  = document.getElementById("adminFormat");
+    const $remember = document.getElementById("adminRemember");
+    const $fetchBtn    = document.getElementById("adminFetchBtn");
+    const $fetchAllBtn = document.getElementById("adminFetchAllBtn");
+    const $famBtn      = document.getElementById("adminFamBtn");
+    const $predBtn     = document.getElementById("adminPredBtn");
+    const $fcBtn       = document.getElementById("adminFcBtn");
+    const $listBtn     = document.getElementById("adminListBtn");
+    const $feedbackBtn = document.getElementById("adminFeedbackBtn");
+    const $feedback    = document.getElementById("adminFeedback");
+    const $forgetBtn   = document.getElementById("adminForgetBtn");
+    const $copyBtn     = document.getElementById("adminCopyBtn");
+    const $toggle    = document.getElementById("adminTokenToggle");
+    const $warn      = document.getElementById("adminWarn");
+    const $output    = document.getElementById("adminOutput");
+    const $meta      = document.getElementById("adminMeta");
+
+    // Restore saved token if any.
+    const savedToken = (() => { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } })();
+    if (savedToken) $token.value = savedToken;
+
+    function setWarn(msg) {
+      $warn.textContent = msg || "";
+      $warn.hidden = !msg;
+    }
+    function setOutput(text, kind /* "ok" | "error" */) {
+      $output.textContent = text || "";
+      $output.hidden = !text;
+      $output.classList.remove("admin-output--ok", "admin-output--error");
+      if (kind === "ok")    $output.classList.add("admin-output--ok");
+      if (kind === "error") $output.classList.add("admin-output--error");
+      $copyBtn.hidden = !text || kind === "error";
+    }
+    function setMeta(msg) {
+      $meta.textContent = msg || "";
+      $meta.hidden = !msg;
+    }
+
+    $toggle.addEventListener("click", () => {
+      const isPwd = $token.type === "password";
+      $token.type = isPwd ? "text" : "password";
+      $toggle.textContent = isPwd ? "Hide" : "Show";
+    });
+
+    $forgetBtn.addEventListener("click", () => {
+      try { localStorage.removeItem(TOKEN_KEY); } catch {}
+      $token.value = "";
+      setWarn("Saved token cleared from this browser.");
+      setTimeout(() => setWarn(""), 2500);
+    });
+
+    $copyBtn.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText($output.textContent); setMeta("Copied to clipboard."); }
+      catch { setMeta("Copy failed — select text manually."); }
+      setTimeout(() => setMeta(""), 2000);
+    });
+
+    $fetchBtn.addEventListener("click", doFetch);
+    $fetchAllBtn.addEventListener("click", doFetchAll);
+    $famBtn.addEventListener("click",  () => doFetchTableCsv("familiarity",    $famBtn,  "Ease ratings (CSV)"));
+    $predBtn.addEventListener("click", () => doFetchTableCsv("predictions",    $predBtn, "Predictions (CSV)"));
+    $fcBtn.addEventListener("click",   () => doFetchTableCsv("forced_choices", $fcBtn,   "Forced choices (CSV)"));
+    $listBtn.addEventListener("click", doList);
+    $feedbackBtn.addEventListener("click", () => loadFeedback(false));
+    $pid.addEventListener("keydown", e => { if (e.key === "Enter") doFetch(); });
+    $token.addEventListener("keydown", e => { if (e.key === "Enter") doFetch(); });
+
+    async function doFetch() {
+      setWarn("");
+      setOutput("");
+      setMeta("");
+
+      const pid    = $pid.value.trim();
+      const token  = $token.value.trim();
+      const format = $format.value;
+      if (!pid)   return setWarn("Enter a participant ID.");
+      if (!token) return setWarn("Enter the bearer token.");
+
+      if ($remember.value === "1") {
+        try { localStorage.setItem(TOKEN_KEY, token); } catch {}
+      }
+
+      $fetchBtn.disabled = true;
+      $fetchBtn.textContent = "Fetching…";
+      try {
+        const url = `/api/v2/export?pid=${encodeURIComponent(pid)}&format=${encodeURIComponent(format)}`;
+        const res = await fetch(url, { headers: { "Authorization": "Bearer " + token } });
+        if (!res.ok) {
+          let err = {};
+          try { err = await res.json(); } catch {}
+          const detail = [err.error, err.message].filter(Boolean).join(" / ") || `HTTP ${res.status}`;
+          setOutput(`Error ${res.status}: ${detail}`, "error");
+          return;
+        }
+        if (format === "csv") {
+          const blob    = await res.blob();
+          const fname   = `${pid}.csv`;
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = blobUrl; a.download = fname;
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(blobUrl);
+          setMeta(`Downloaded ${fname} (${blob.size} bytes).`);
+        } else {
+          const data = await res.json();
+          const pretty = JSON.stringify(data, null, 2);
+          setOutput(pretty, "ok");
+          const nSessions = data.sessions?.length ?? 0;
+          const nTrials   = (data.sessions || []).reduce((s, x) => s + (x.trials?.length || 0), 0);
+          setMeta(`${nSessions} session(s), ${nTrials} trial(s).`);
+        }
+      } catch (e) {
+        setOutput(`Network error: ${e?.message || e}`, "error");
+      } finally {
+        $fetchBtn.disabled = false;
+        $fetchBtn.textContent = "Fetch";
+      }
+    }
+
+    // ── Column layouts for the workbook tabs ─────────────────────────────────
+    // Same columns, in the same order, as the per-table CSV emitters in
+    // worker.mjs, so each Excel tab matches its individual CSV button exactly.
+    const HDR_TRIALS = [
+      "pid", "option_id", "enrollment_date", "dev_mode", "participant_tz",
+      "session_id", "session_label", "phase", "group_practiced",
+      "session_started_at", "session_completed_at", "session_context",
+      "trial_id", "item_id", "group_id", "feature", "full_name", "qtype",
+      "raw_answer", "correct", "rt_ms", "review_ms",
+      "stim_on_ts", "stim_off_ts", "trial_order",
+      "timed_out", "retry_attempt", "soft_capped", "confidence", "trial_created_at",
+    ];
+    const HDR_FAM  = ["pid", "checkpoint", "item_id", "group_id", "feature", "full_name", "value", "created_at"];
+    const HDR_PRED = ["pid", "session_label", "value", "created_at"];
+    const HDR_FC   = ["pid", "checkpoint", "choice", "confidence", "created_at"];
+
+    // Turn an array of row-objects into a worksheet, always writing the header
+    // row first (so an empty table still shows its columns). Cell types follow
+    // the JS value types: numbers stay numeric and strings stay text, so IDs
+    // and ISO timestamps keep their exact values.
+    function sheetFromRows(headerKeys, rows) {
+      const aoa = [headerKeys];
+      for (const r of rows) aoa.push(headerKeys.map(k => (r[k] ?? null)));
+      return XLSX.utils.aoa_to_sheet(aoa);
+    }
+
+    // Flatten the bulk-export JSON (participant -> sessions -> trials, plus the
+    // three metacog arrays) into the four flat tables that become the tabs.
+    function buildSheetsFromExportAll(participants) {
+      const trials = [], familiarity = [], predictions = [], forcedChoices = [];
+      for (const row of participants) {
+        const p = row.participant || {};
+        for (const s of (row.sessions || [])) {
+          for (const t of (s.trials || [])) {
+            trials.push({
+              pid: p.pid, option_id: p.option_id, enrollment_date: p.enrollment_date,
+              dev_mode: p.dev_mode, participant_tz: p.tz,
+              session_id: s.id, session_label: s.session_label, phase: s.phase,
+              group_practiced: s.group_practiced, session_started_at: s.started_at,
+              session_completed_at: s.completed_at, session_context: s.session_context,
+              trial_id: t.id, item_id: t.item_id, group_id: t.group_id, feature: t.feature,
+              full_name: t.full_name, qtype: t.qtype, raw_answer: t.raw_answer,
+              correct: t.correct, rt_ms: t.rt_ms, review_ms: t.review_ms,
+              stim_on_ts: t.stim_on_ts, stim_off_ts: t.stim_off_ts, trial_order: t.trial_order,
+              timed_out: t.timed_out, retry_attempt: t.retry_attempt, soft_capped: t.soft_capped,
+              confidence: t.confidence, trial_created_at: t.created_at,
+            });
+          }
+        }
+        for (const r of (row.familiarity || [])) {
+          familiarity.push({
+            pid: p.pid, checkpoint: r.checkpoint, item_id: r.item_id, group_id: r.group_id,
+            feature: r.feature, full_name: r.full_name, value: r.value, created_at: r.created_at,
+          });
+        }
+        for (const r of (row.predictions || [])) {
+          predictions.push({
+            pid: p.pid, session_label: r.session_label, value: r.value, created_at: r.created_at,
+          });
+        }
+        for (const r of (row.forced_choices || [])) {
+          forcedChoices.push({
+            pid: p.pid, checkpoint: r.checkpoint, choice: r.choice,
+            confidence: r.confidence, created_at: r.created_at,
+          });
+        }
+      }
+      return { trials, familiarity, predictions, forcedChoices };
+    }
+
+    // "Download all" builds one .xlsx workbook with four tabs, in the browser,
+    // from the JSON the worker already serves.
+    async function doFetchAll() {
+      setWarn("");
+      setOutput("");
+      setMeta("");
+
+      const token = $token.value.trim();
+      if (!token) return setWarn("Enter the bearer token.");
+      if (typeof XLSX === "undefined") {
+        return setWarn("The Excel library did not load. Reload the page, or use the individual CSV buttons.");
+      }
+      if ($remember.value === "1") {
+        try { localStorage.setItem(TOKEN_KEY, token); } catch {}
+      }
+
+      $fetchAllBtn.disabled = true;
+      $fetchAllBtn.textContent = "Building…";
+      try {
+        const res = await fetch("/api/v2/export-all?format=json", {
+          headers: { "Authorization": "Bearer " + token },
+        });
+        if (!res.ok) {
+          let err = {};
+          try { err = await res.json(); } catch {}
+          const detail = [err.error, err.message].filter(Boolean).join(" / ") || `HTTP ${res.status}`;
+          setOutput(`Error ${res.status}: ${detail}`, "error");
+          return;
+        }
+        const data = await res.json();
+        const participants = data.participants || [];
+        const { trials, familiarity, predictions, forcedChoices } = buildSheetsFromExportAll(participants);
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, sheetFromRows(HDR_TRIALS, trials),        "Trials");
+        XLSX.utils.book_append_sheet(wb, sheetFromRows(HDR_FAM,    familiarity),   "Ease ratings");
+        XLSX.utils.book_append_sheet(wb, sheetFromRows(HDR_PRED,   predictions),   "Predictions");
+        XLSX.utils.book_append_sheet(wb, sheetFromRows(HDR_FC,     forcedChoices), "Forced choices");
+
+        const stamp = new Date().toISOString().slice(0, 10);
+        const fname = `chemflashcards_all_${stamp}.xlsx`;
+        XLSX.writeFile(wb, fname);
+
+        setMeta(
+          `Downloaded ${fname}: ${participants.length} participant(s) — ` +
+          `${trials.length} trial(s), ${familiarity.length} ease rating(s), ` +
+          `${predictions.length} prediction(s), ${forcedChoices.length} forced choice(s).`
+        );
+      } catch (e) {
+        setOutput(`Network or export error: ${e?.message || e}`, "error");
+      } finally {
+        $fetchAllBtn.disabled = false;
+        $fetchAllBtn.textContent = "Download all (Excel)";
+      }
+    }
+
+    // Generic bulk-CSV download for the metacognition side-tables: familiarity /
+    // "easy to learn" ratings, pre-session predictions, and forced choices.
+    // These live in their own tables (not in the trials export), so each is a
+    // separate CSV with its own column shape. Mirrors doFetchAll but is
+    // parameterized by the export-all `table` value.
+    async function doFetchTableCsv(table, $btn, idleLabel) {
+      setWarn("");
+      setOutput("");
+      setMeta("");
+
+      const token = $token.value.trim();
+      if (!token) return setWarn("Enter the bearer token.");
+      if ($remember.value === "1") {
+        try { localStorage.setItem(TOKEN_KEY, token); } catch {}
+      }
+
+      $btn.disabled = true;
+      $btn.textContent = "Downloading…";
+      try {
+        const res = await fetch(`/api/v2/export-all?format=csv&table=${encodeURIComponent(table)}`, {
+          headers: { "Authorization": "Bearer " + token },
+        });
+        if (!res.ok) {
+          let err = {};
+          try { err = await res.json(); } catch {}
+          const detail = [err.error, err.message].filter(Boolean).join(" / ") || `HTTP ${res.status}`;
+          setOutput(`Error ${res.status}: ${detail}`, "error");
+          return;
+        }
+        const blob    = await res.blob();
+        // Prefer the worker's Content-Disposition filename; fall back if absent.
+        const cd      = res.headers.get("Content-Disposition") || "";
+        const match   = cd.match(/filename="?([^";]+)"?/i);
+        const stamp   = new Date().toISOString().slice(0, 10);
+        const fname   = match ? match[1] : `chemflashcards_all_${table}_${stamp}.csv`;
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl; a.download = fname;
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(blobUrl);
+        setMeta(`Downloaded ${fname} (${blob.size.toLocaleString()} bytes).`);
+      } catch (e) {
+        setOutput(`Network error: ${e?.message || e}`, "error");
+      } finally {
+        $btn.disabled = false;
+        $btn.textContent = idleLabel;
+      }
+    }
+
+    async function doList() {
+      setWarn("");
+      setOutput("");
+      setMeta("");
+
+      const token = $token.value.trim();
+      if (!token) return setWarn("Enter the bearer token.");
+      if ($remember.value === "1") {
+        try { localStorage.setItem(TOKEN_KEY, token); } catch {}
+      }
+
+      $listBtn.disabled = true;
+      $listBtn.textContent = "Loading…";
+      try {
+        const res = await fetch("/api/v2/list-participants", {
+          headers: { "Authorization": "Bearer " + token },
+        });
+        if (!res.ok) {
+          let err = {};
+          try { err = await res.json(); } catch {}
+          const detail = [err.error, err.message].filter(Boolean).join(" / ") || `HTTP ${res.status}`;
+          setOutput(`Error ${res.status}: ${detail}`, "error");
+          return;
+        }
+        const data = await res.json();
+        const rows = data.participants || [];
+        // Render as a small fixed-width table.
+        const hdrCols = ["PID", "Option", "Enrolled", "Sessions", "DEV"];
+        const widths  = [16, 8, 21, 9, 4];
+        function pad(s, n) { s = String(s ?? ""); return s.length >= n ? s.slice(0, n) : s + " ".repeat(n - s.length); }
+        const lines = [
+          hdrCols.map((c, i) => pad(c, widths[i])).join(" "),
+          widths.map(n => "-".repeat(n)).join(" "),
+        ];
+        for (const r of rows) {
+          lines.push([
+            pad(r.pid,                       widths[0]),
+            pad(r.option_id?.replace("option", "opt") || "", widths[1]),
+            pad((r.enrollment_date || "").slice(0, 19).replace("T", " "), widths[2]),
+            pad(String(r.n_sessions),        widths[3]),
+            pad(r.dev_mode ? "yes" : "",     widths[4]),
+          ].join(" "));
+        }
+        setOutput(lines.join("\n") || "(no participants enrolled yet)", "ok");
+        setMeta(`${data.n_participants} participant(s) total.`);
+      } catch (e) {
+        setOutput(`Network error: ${e?.message || e}`, "error");
+      } finally {
+        $listBtn.disabled = false;
+        $listBtn.textContent = "List participants";
+      }
+    }
+
+    // ── Edit requests (tester feedback) ────────────────────────────────────────
+    let feedbackShowAll = false;
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+
+    async function loadFeedback(showAll) {
+      feedbackShowAll = !!showAll;
+      setWarn(""); setOutput(""); setMeta("");
+      const token = $token.value.trim();
+      if (!token) return setWarn("Enter the bearer token.");
+      if ($remember.value === "1") { try { localStorage.setItem(TOKEN_KEY, token); } catch {} }
+
+      $feedbackBtn.disabled = true;
+      $feedbackBtn.textContent = "Loading…";
+      try {
+        const q = feedbackShowAll ? "" : "?resolved=0";
+        const res = await fetch("/api/v2/feedback" + q, { headers: { "Authorization": "Bearer " + token } });
+        $feedback.hidden = false;
+        if (!res.ok) {
+          let err = {}; try { err = await res.json(); } catch {}
+          const detail = [err.error, err.message].filter(Boolean).join(" / ") || `HTTP ${res.status}`;
+          $feedback.innerHTML = `<p class="fb-err">Error ${res.status}: ${esc(detail)}</p>`;
+          return;
+        }
+        const data = await res.json();
+        renderFeedback(data.requests || []);
+      } catch (e) {
+        $feedback.hidden = false;
+        $feedback.innerHTML = `<p class="fb-err">Network error: ${esc(e?.message || e)}</p>`;
+      } finally {
+        $feedbackBtn.disabled = false;
+        $feedbackBtn.textContent = "Edit requests";
+      }
+    }
+
+    function renderFeedback(rows) {
+      // Showing the feedback panel; hide the JSON/CSV output to avoid clutter.
+      setOutput("");
+      $feedback.hidden = false;
+
+      const toggleLabel = feedbackShowAll ? "Show open only" : "Show resolved too";
+      if (!rows.length) {
+        $feedback.innerHTML =
+          `<div class="fb-head"><span>No ${feedbackShowAll ? "" : "open "}edit requests.</span>` +
+          `<button class="btn btn--ghost btn--sm" id="fbToggle">${toggleLabel}</button></div>`;
+        document.getElementById("fbToggle").onclick = () => loadFeedback(!feedbackShowAll);
+        return;
+      }
+
+      // Group pins by the batch they were submitted in (one page visit).
+      const groups = new Map();
+      for (const r of rows) {
+        if (!groups.has(r.batch_id)) groups.set(r.batch_id, []);
+        groups.get(r.batch_id).push(r);
+      }
+
+      let html =
+        `<div class="fb-head"><span>${rows.length} ${feedbackShowAll ? "" : "open "}request${rows.length === 1 ? "" : "s"} ` +
+        `in ${groups.size} submission${groups.size === 1 ? "" : "s"}</span>` +
+        `<button class="btn btn--ghost btn--sm" id="fbToggle">${toggleLabel}</button></div>`;
+
+      for (const [batch, items] of groups) {
+        const first = items[0];
+        const when = (first.created_at || "").replace("T", " ").slice(0, 19);
+        const allResolved = items.every(i => i.resolved);
+        html +=
+          `<div class="fb-card${allResolved ? " fb-card--done" : ""}">` +
+            `<div class="fb-card__meta">` +
+              `<strong>${esc(first.page)}</strong>` +
+              `<span>${first.reporter ? "· " + esc(first.reporter) : "· (no name)"}</span>` +
+              `<span>· ${esc(when)}</span>` +
+              `<code>${esc(first.pid || "")}</code>` +
+              `<button class="btn btn--ghost btn--sm fb-resolve" data-batch="${esc(batch)}" data-resolved="${allResolved ? 1 : 0}">` +
+                `${allResolved ? "Reopen" : "Mark done"}</button>` +
+            `</div>` +
+            `<ul class="fb-pins">` +
+              items.map(it =>
+                `<li class="${it.resolved ? "fb-pin--done" : ""}">` +
+                  `<div class="fb-note">${esc(it.note)}</div>` +
+                  `<div class="fb-ctx">` +
+                    `${it.selected_text ? "“" + esc(it.selected_text) + "” — " : ""}` +
+                    `${esc(it.element_text || "")}` +
+                    `${it.selector ? ` <span class="fb-sel">${esc(it.selector)}</span>` : ""}` +
+                  `</div>` +
+                `</li>`
+              ).join("") +
+            `</ul>` +
+          `</div>`;
+      }
+
+      $feedback.innerHTML = html;
+      document.getElementById("fbToggle").onclick = () => loadFeedback(!feedbackShowAll);
+      $feedback.querySelectorAll(".fb-resolve").forEach(btn => {
+        btn.onclick = () => markResolved(btn.dataset.batch, btn.dataset.resolved === "1" ? 0 : 1);
+      });
+    }
+
+    async function markResolved(batch_id, resolved) {
+      const token = $token.value.trim();
+      if (!token) return setWarn("Enter the bearer token.");
+      try {
+        const res = await fetch("/api/v2/feedback/resolve", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+          body: JSON.stringify({ batch_id, resolved }),
+        });
+        if (!res.ok) {
+          let err = {}; try { err = await res.json(); } catch {}
+          setWarn(`Could not update: ${err.error || ("HTTP " + res.status)}`);
+          return;
+        }
+        loadFeedback(feedbackShowAll);   // refresh the list in place
+      } catch (e) {
+        setWarn(`Network error: ${e?.message || e}`);
+      }
+    }
+  </script>
+</body>
+</html>

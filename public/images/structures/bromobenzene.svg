@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no" ?>
+<svg width="62px" height="103px" viewBox="-31.08 -68.00 62.17 102.50" style="background-color: #ffffff00" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 0.00,-25.50 L 22.08,-12.75 L 22.08,12.75 L 0.00,25.50 L -22.08,12.75 L -22.08,-12.75 Z" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M -0.82,-20.08 L 17.80,-9.33" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 17.80,9.33 L -0.82,20.08" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M -16.98,10.75 L -16.98,-10.75" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 0.00,-25.50 L 0.00,-42.04" />
+<text x="0.00" y="-45.40" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle">Br</text>
+</svg>

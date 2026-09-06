@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChemFlashcards — Chemistry Nomenclature Practice</title>
+  <meta name="description" content="A research-based flashcard platform for practising IUPAC and common chemical nomenclature, hosted by the QCER Lab at Queen's University.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Landing page styles ── */
+    .landing-main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+      flex: 1;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .hero__title {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+      max-width: 680px;
+    }
+
+    .hero__title .green { color: var(--color-accent); }
+
+    .hero__desc {
+      font-size: 1.05rem;
+      color: var(--color-muted);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    .hero__ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+
+    .hero__ctas .btn--lg {
+      font-size: 1rem;
+      padding: 14px 28px;
+    }
+
+    .hero__badge {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 0.8rem;
+      color: var(--color-hint);
+      margin-top: var(--space-sm);
+    }
+
+    .hero__badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Sections */
+    .section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section__label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section__title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+      margin-bottom: var(--space-md);
+    }
+
+    .section__body {
+      font-size: 0.97rem;
+      color: var(--color-muted);
+      line-height: 1.75;
+      max-width: 640px;
+    }
+
+    .section__body + .section__body {
+      margin-top: var(--space-md);
+    }
+
+    /* CTA cards */
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+
+    .cta-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl) var(--space-lg) var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      box-shadow: var(--shadow-sm);
+      transition:
+        border-color var(--dur-med) var(--ease-out),
+        transform    var(--dur-med) var(--ease-out),
+        box-shadow   var(--dur-med) var(--ease-out);
+    }
+
+    .cta-card:hover {
+      border-color: var(--color-border-2);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .cta-card__icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: var(--color-accent-dim);
+    }
+
+    .cta-card__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+    }
+
+    .cta-card__desc {
+      font-size: 0.92rem;
+      color: var(--color-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* About strip */
+    .about-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xl);
+      margin-top: var(--space-xl);
+    }
+
+    .about-stat { display: flex; flex-direction: column; gap: 4px; }
+
+    .about-stat__val {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .about-stat__label {
+      font-size: 0.82rem;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Contact form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      max-width: 520px;
+      margin-top: var(--space-xl);
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    .contact-form textarea.field__input {
+      resize: vertical;
+      min-height: 120px;
+      font-family: var(--font-body);
+    }
+
+@media (max-width: 640px) {
+      .hero { padding: 48px 0 40px; }
+      .hero__title { font-size: 2rem; }
+      .section { padding: 48px 0; }
+      .section__title { font-size: 1.5rem; }
+      .contact-row { grid-template-columns: 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a href="index.html" class="topbar__logo">ChemFlashcards</a>
+      <nav class="topbar__nav" aria-label="Site navigation">
+        <a href="index.html"   class="btn btn--ghost btn--sm">Home</a>
+        <a href="#about"   class="btn btn--ghost btn--sm">About</a>
+        <a href="#contact" class="btn btn--ghost btn--sm">Contact</a>
+        <a href="study.html"    class="btn btn--amber btn--sm" style="padding:7px 14px; font-size:0.82rem;">Participants click here</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="landing-main">
+
+    <!-- HERO -->
+    <section class="hero" id="top" aria-label="Introduction">
+      <h1 class="hero__title">
+        Learn the <span class="green">"Language"</span><br>of Chemistry
+      </h1>
+      <p class="hero__desc">
+        ChemFlashcards is a research-based web app for practising IUPAC and common chemical nomenclature using spaced retrieval practice. This is one of the most effective learning strategies in cognitive science.
+      </p>
+      <div class="hero__ctas">
+        <a href="#contact" class="btn btn--primary btn--lg">
+          Sign Up for the Study
+        </a>
+        <a href="study.html" class="btn btn--amber btn--lg">
+          Participants click here
+        </a>
+        <a href="demo.html" class="btn btn--ghost btn--lg" aria-label="View an interactive demo of the study without enrolling">
+          Demo
+        </a>
+      </div>
+      <div class="hero__badge">
+        <span class="hero__badge-dot" aria-hidden="true"></span>
+        Study currently recruiting participants
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how-it-works" aria-label="How it works">
+      <p class="section__label">How it works</p>
+      <h2 class="section__title">Two ways to use ChemFlashcards</h2>
+      <div class="cta-grid">
+
+        <div class="cta-card">
+          <div class="cta-card__icon" aria-hidden="true">🔬</div>
+          <h3 class="cta-card__title">Join the study</h3>
+          <p class="cta-card__desc">
+            Participate in a research study comparing spaced vs. massed practice for chemistry nomenclature.
+          </p>
+          <a href="#contact" class="btn btn--primary">Sign Up</a>
+        </div>
+
+        <div class="cta-card">
+          <div class="cta-card__icon" aria-hidden="true">📋</div>
+          <h3 class="cta-card__title">Returning participant</h3>
+          <p class="cta-card__desc">
+            Already enrolled? Enter your participant ID and session number to continue where you left off. Your progress is saved automatically.
+          </p>
+          <a href="study.html" class="btn btn--amber">Participants click here</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about" aria-label="About the study">
+      <p class="section__label">About</p>
+      <h2 class="section__title">Why spaced retrieval practice?</h2>
+      <p class="section__body">
+        Spaced retrieval practice (SRP) is the technique of actively recalling information across multiple, distributed sessions. This study method has been shown to produce stronger and more durable learning than massed practice (more commonly known as "cramming"). This study investigates how SRP applies to IUPAC and common chemical nomenclature, a foundational skill for chemistry students.
+      </p>
+      <p class="section__body">
+        The study is conducted by the QCER Lab in the Department of Chemistry at Queen's University, under the supervision of Dr. Amanda Bongers.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact" aria-label="Contact the researcher" style="border-bottom: none;">
+      <p class="section__label">Contact</p>
+      <h2 class="section__title">Get in touch</h2>
+      <p class="section__body">
+        Have a question about the study, the app, or anything else? Fill out the form below and I'll get back to you as soon as I can.
+      </p>
+
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="contact-row">
+          <div class="field">
+            <label class="field__label" for="contactName">Name</label>
+            <input id="contactName" class="field__input" type="text" placeholder="Your name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="contactEmail">Email</label>
+            <input id="contactEmail" class="field__input" type="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="contactSubject">Subject</label>
+          <input id="contactSubject" class="field__input" type="text" placeholder="e.g. Question about the study">
+        </div>
+        <div class="field">
+          <label class="field__label" for="contactMsg">Message</label>
+          <textarea id="contactMsg" class="field__input" placeholder="Your message…" required></textarea>
+        </div>
+        <p class="hint-sm" id="contactWarn" hidden style="color: var(--color-yellow);"></p>
+        <button type="submit" class="btn btn--primary" style="align-self: flex-start;">
+          Send Message
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    Created by Joshua Maligaya &middot; QCER Lab, Queen's University &middot;
+    <a href="mailto:joshua.maligaya@queensu.ca" style="color: var(--color-accent); text-decoration: none;">joshua.maligaya@queensu.ca</a>
+  </footer>
+
+  <!-- ═══ THEME TOGGLE ═══ -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    💡
+  </button>
+
+  <script>
+    // ── Theme toggle ──────────────────────────────────────────
+    (function() {
+      const root   = document.documentElement;
+      const btn    = document.getElementById('themeToggle');
+      const stored = localStorage.getItem('cfc-theme');
+      // Default is light mode; dark only if user has explicitly chosen it
+      let dark = stored === 'dark';
+      function apply() {
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        btn.textContent = dark ? '💡' : '🌙';
+        btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      }
+      apply();
+      btn.addEventListener('click', () => {
+        dark = !dark;
+        localStorage.setItem('cfc-theme', dark ? 'dark' : 'light');
+        apply();
+      });
+    })();
+
+    // ── Contact form → mailto ─────────────────────────────────
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name    = document.getElementById('contactName').value.trim();
+      const email   = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value.trim();
+      const msg     = document.getElementById('contactMsg').value.trim();
+      const warn    = document.getElementById('contactWarn');
+
+      if (!name || !email || !msg) {
+        warn.textContent = 'Please fill in your name, email, and message.';
+        warn.hidden = false;
+        return;
+      }
+
+      warn.hidden = true;
+      const sub  = encodeURIComponent(subject || 'ChemFlashcards inquiry');
+      const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + msg);
+      window.location.href = 'mailto:joshua.maligaya@queensu.ca?subject=' + sub + '&body=' + body;
+    });
+  </script>
+
+  <script>
+    // ── Button pop animation for landing page links ───────────
+    function popEl(el) {
+      el.classList.remove('popping');
+      void el.offsetWidth;
+      el.classList.add('popping');
+      el.addEventListener('animationend', () => el.classList.remove('popping'), { once: true });
+    }
+    document.addEventListener('click', e => {
+      const btn = e.target?.closest?.('a.btn, button');
+      if (btn) popEl(btn);
+    });
+  </script>
+  <!-- Tester tools: self-gating; renders only when the URL carries a DEV test id. Invisible to real participants. -->
+  <script type="module" src="tester-tools.js"></script>
+</body>
+</html>

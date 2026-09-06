@@ -1,0 +1,1292 @@
+/* ═══════════════════════════════════════════════════════
+   ChemFlashcards — style.css
+   Design system: IBM Plex Mono + Sora
+   Almond / Matcha / Forest / Eclipse palette
+   Light and dark mode support.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── 1. Tokens (Dark mode, default) ────────────────────────────────────
+   Eclipse-grounded palette: deep teal background, warm cream text,
+   lifted Matcha for accents so it pops against the dark surface. */
+:root {
+  --color-bg:           #1a3636;  /* Eclipse */
+  --color-surface:      #243f3f;  /* Eclipse lifted */
+  --color-surface-2:    #2f4a4a;  /* Eclipse lifted +1 */
+  --color-border:       #2a4039;  /* Forest tinted dark */
+  --color-border-2:     #3d5247;  /* Matcha-tinted border for emphasis */
+  --color-text:         #e8ddc7;  /* Warm cream (Almond family) */
+  --color-muted:        #8aa092;  /* Sage muted */
+  --color-hint:         #5e7268;  /* Forest muted */
+
+  --color-accent:       #8aa68d;  /* Lifted Matcha for dark surfaces */
+  --color-accent-dim:   #2a3d36;  /* Deep forest tint */
+  --color-accent-hover: #a5be9f;  /* Pale sage hover */
+  --color-green:        #7dba72;  /* Warm success green, distinct from accent */
+  --color-green-dim:    #1f3a25;
+  --color-red:          #d17765;  /* Warm coral, not safety red */
+  --color-red-dim:      #3a1f1a;
+  --color-yellow:       #dbae6e;  /* Warm honey amber */
+  --color-yellow-dim:   #3a2a18;
+  --color-amber:        #d6a659;  /* Stand-out CTA (honey, lifted) */
+  --color-amber-hover:  #c69449;
+
+  --color-pill-bg:      #243f3f;
+  --color-pill-border:  #3d5247;
+
+  --font-body: 'Sora', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-pill: 999px;
+
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.30), 0 1px 3px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.38), 0 2px 6px rgba(0, 0, 0, 0.22);
+
+  --ease-out:    cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:    150ms;
+  --dur-med:     200ms;
+  --dur-slow:    300ms;
+}
+
+/* ── 1b. Light mode ─────────────────────────────────────────────────────
+   [data-theme="light"] applies the explicit toggle; the @media block below
+   applies the OS default when the toggle has not been used. Palette: cream
+   background, Eclipse text, Matcha accent. */
+[data-theme="light"] {
+  --color-bg:           #fbf6ea;  /* Pale cream (paler Almond) */
+  --color-surface:      #f5ebd9;  /* Soft Almond cream */
+  --color-surface-2:    #d6bd98;  /* Almond (used sparingly for emphasis) */
+  --color-border:       #e5d5b8;  /* Warm tan border */
+  --color-border-2:     #c9a878;  /* Deeper Almond for emphatic borders */
+  --color-text:         #1a3636;  /* Eclipse */
+  --color-muted:        #5e7268;  /* Forest muted */
+  --color-hint:         #8aa692;  /* Sage */
+  --color-accent:       #677d6a;  /* Matcha Brew */
+  --color-accent-dim:   #dfe5da;  /* Sage tint for backgrounds */
+  --color-accent-hover: #40534c;  /* Forest Roast */
+  --color-green:        #5e9a55;  /* Warm success green */
+  --color-green-dim:    #e3efde;
+  --color-red:          #b54a3a;  /* Terracotta */
+  --color-red-dim:      #f4e1dc;
+  --color-yellow:       #c69449;  /* Warm amber */
+  --color-yellow-dim:   #f4e8d2;
+  --color-amber:        #b9893e;  /* Stand-out CTA (honey) */
+  --color-amber-hover:  #99702f;
+  --color-pill-bg:      #f5ebd9;
+  --color-pill-border:  #e5d5b8;
+
+  --shadow-sm: 0 1px 2px rgba(26, 54, 54, 0.06);
+  --shadow-md: 0 4px 10px rgba(26, 54, 54, 0.08), 0 1px 3px rgba(26, 54, 54, 0.06);
+  --shadow-lg: 0 10px 24px rgba(26, 54, 54, 0.12), 0 2px 6px rgba(26, 54, 54, 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-bg:           #fbf6ea;
+    --color-surface:      #f5ebd9;
+    --color-surface-2:    #d6bd98;
+    --color-border:       #e5d5b8;
+    --color-border-2:     #c9a878;
+    --color-text:         #1a3636;
+    --color-muted:        #5e7268;
+    --color-hint:         #8aa692;
+    --color-accent:       #677d6a;
+    --color-accent-dim:   #dfe5da;
+    --color-accent-hover: #40534c;
+    --color-green:        #5e9a55;
+    --color-green-dim:    #e3efde;
+    --color-red:          #b54a3a;
+    --color-red-dim:      #f4e1dc;
+    --color-yellow:       #c69449;
+    --color-yellow-dim:   #f4e8d2;
+    --color-amber:        #b9893e;
+    --color-amber-hover:  #99702f;
+    --color-pill-bg:      #f5ebd9;
+    --color-pill-border:  #e5d5b8;
+
+    --shadow-sm: 0 1px 2px rgba(26, 54, 54, 0.06);
+    --shadow-md: 0 4px 10px rgba(26, 54, 54, 0.08), 0 1px 3px rgba(26, 54, 54, 0.06);
+    --shadow-lg: 0 10px 24px rgba(26, 54, 54, 0.12), 0 2px 6px rgba(26, 54, 54, 0.08);
+  }
+}
+
+/* ── 2. Reset & Base ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Hides any element carrying the hidden attribute, ahead of display rules
+   set elsewhere. */
+[hidden] { display: none !important; }
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100dvh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--dur-med), color var(--dur-med);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 3. Top Bar ────────────────────────────────────────── */
+/* Translucent topbar with a backdrop blur. Background colour matches the
+   page bg in each theme; the alpha lets content scroll subtly behind it. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(26, 54, 54, 0.85);   /* Eclipse @ 85% alpha for dark theme */
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--dur-med) var(--ease-out),
+              border-color var(--dur-med) var(--ease-out);
+}
+
+[data-theme="light"] .topbar {
+  background: rgba(251, 246, 234, 0.88);   /* Cream @ 88% alpha for light theme */
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .topbar {
+    background: rgba(251, 246, 234, 0.88);
+  }
+}
+
+.topbar__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.topbar__logo {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.topbar__logo:hover { color: var(--color-accent-hover); }
+
+.topbar__nav {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* On narrow phones, the nav wraps to a second line below the logo. */
+@media (max-width: 480px) {
+  .topbar__inner { justify-content: center; }
+  .topbar__nav { width: 100%; justify-content: center; }
+}
+
+/* ── 4. Progress Bar ───────────────────────────────────── */
+/* Top-of-page progress bar, 5px tall, with a Matcha gradient fill. */
+.progress-bar {
+  height: 5px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  transition: width 500ms var(--ease-out);
+  border-radius: var(--radius-pill);
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+   Honours the OS-level "reduce motion" preference: keyframe animations and
+   hover transforms are switched off, and transitions are shortened so colour
+   and border state changes still happen without movement. The
+   .feedback-block--pop animation has its own reduced-motion override in
+   v2-style.css. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn:hover, .card--interactive:hover, .cta-card:hover, .theme-toggle:hover {
+    transform: none !important;
+  }
+}
+
+/* ── 5. Main Layout ────────────────────────────────────── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+  min-height: calc(100dvh - 53px);
+  flex: 1;
+}
+
+/* ── 6. View transitions ───────────────────────────────── */
+.view { animation: viewIn var(--dur-med) var(--ease-out) both; }
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 7. Card ───────────────────────────────────────────── */
+/* Card surface: soft cream or forest background, warm-tan border, and a small
+   resting shadow. The hover state for interactive cards lives in
+   .card--interactive. */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition:
+    box-shadow var(--dur-med) var(--ease-out),
+    transform  var(--dur-med) var(--ease-out),
+    border-color var(--dur-med) var(--ease-out);
+}
+
+/* Interactive cards (CTA tiles on the landing) lift on hover. Non-interactive
+   cards (instructions, view-landing) do not. */
+.card--interactive {
+  cursor: pointer;
+}
+.card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-2);
+}
+
+/* Warning / success variants: subtle palette-tinted gradients. */
+.card--warning {
+  border-color: var(--color-yellow);
+  background: linear-gradient(135deg, var(--color-surface) 70%, var(--color-yellow-dim) 100%);
+}
+
+.card--success {
+  border-color: var(--color-green);
+  background: linear-gradient(135deg, var(--color-surface) 70%, var(--color-green-dim) 100%);
+}
+
+.card__header {
+  padding: var(--space-xl) var(--space-xl) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+.card__title {
+  font-size: 1.65rem; font-weight: 700; line-height: 1.2;
+  letter-spacing: -0.02em; color: var(--color-text);
+}
+.card__subtitle { margin-top: var(--space-sm); color: var(--color-muted); font-size: 0.95rem; line-height: 1.55; }
+.card__body {
+  padding: var(--space-lg) var(--space-xl);
+  display: flex; flex-direction: column; gap: var(--space-lg);
+}
+.card__footer {
+  padding: var(--space-lg) var(--space-xl) var(--space-xl);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+}
+.card__footer--row { flex-direction: row; flex-wrap: wrap; align-items: center; }
+
+/* ── 8. Buttons ────────────────────────────────────────── */
+/* Button base. A 44px minimum height keeps the touch target usable on mobile.
+   Lifts on hover, settles on active. The focus ring is drawn as an outline. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: 12px 22px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color var(--dur-med) var(--ease-out),
+    border-color    var(--dur-med) var(--ease-out),
+    color           var(--dur-med) var(--ease-out),
+    box-shadow      var(--dur-med) var(--ease-out),
+    transform       var(--dur-med) var(--ease-out),
+    opacity         var(--dur-fast) var(--ease-out);
+}
+.btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  outline-offset: 2px;
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; box-shadow: none; }
+
+/* Primary: solid Matcha fill. The text colour switches with the theme. */
+.btn--primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+/* Ghost: bordered, transparent, restrained. Used for tertiary actions. */
+.btn--ghost {
+  background: transparent;
+  border-color: var(--color-border-2);
+  color: var(--color-text);
+  box-shadow: none;
+}
+.btn--ghost:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-dim);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Amber: stand-out CTA. Used sparingly, for a single button that needs more
+   emphasis than the primary. On the public landing this is "Sign Up for the
+   Study". */
+.btn--amber {
+  background: var(--color-amber);
+  border-color: var(--color-amber);
+  color: var(--color-bg);
+}
+.btn--amber:hover:not(:disabled) {
+  background: var(--color-amber-hover);
+  border-color: var(--color-amber-hover);
+}
+
+/* Danger, success, and error variants, tinted to the palette. */
+.btn--danger {
+  background: var(--color-red-dim);
+  border-color: var(--color-red);
+  color: var(--color-red);
+  box-shadow: none;
+}
+.btn--danger:hover:not(:disabled) {
+  background: var(--color-red);
+  color: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--success {
+  background: var(--color-green-dim);
+  border-color: var(--color-green);
+  color: var(--color-green);
+  box-shadow: none;
+}
+.btn--success.active {
+  background: var(--color-green);
+  color: var(--color-bg);
+}
+
+.btn--error {
+  background: var(--color-red-dim);
+  border-color: var(--color-red);
+  color: var(--color-red);
+  box-shadow: none;
+}
+.btn--error.active {
+  background: var(--color-red);
+  color: var(--color-bg);
+}
+
+/* Size modifiers. --lg is the big landing CTA; --sm is for in-page chips
+   like the DEV skip. */
+.btn--lg {
+  min-height: 52px;
+  padding: 14px 28px;
+  font-size: 1.05rem;
+}
+.btn--sm {
+  min-height: 36px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+}
+.btn--full { width: 100%; }
+
+@keyframes btn-pop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.93); }
+  60%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.btn.popping { animation: btn-pop 300ms var(--ease-out); }
+
+@keyframes btn-shake {
+  0%   { transform: translateX(0) scale(1); }
+  10%  { transform: translateX(-8px) scale(0.98); }
+  25%  { transform: translateX(8px) scale(0.98); }
+  40%  { transform: translateX(-6px) scale(0.99); }
+  55%  { transform: translateX(6px) scale(0.99); }
+  70%  { transform: translateX(-3px); }
+  85%  { transform: translateX(3px); }
+  100% { transform: translateX(0) scale(1); }
+}
+.btn.shaking { animation: btn-shake 450ms ease-in-out; }
+
+/* ── 9. Form fields ────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: var(--space-xs); }
+.field__label {
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-muted);
+}
+/* Input height matches the button base at 44px, so a label, input, and button
+   stack shares one vertical rhythm. The background uses the page background
+   colour, which sets the input into the card. */
+.field__input {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    border-color var(--dur-med) var(--ease-out),
+    box-shadow   var(--dur-med) var(--ease-out),
+    background-color var(--dur-med) var(--ease-out);
+}
+.field__input::placeholder { color: var(--color-hint); }
+
+/* Selects share .field__input styling, which removes the native appearance,
+   and draw their own dropdown chevron from an inline SVG. The light-mode
+   chevron uses the forest-muted hex and the dark-mode chevron uses sage-muted,
+   matching --color-muted in each theme. */
+select.field__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235e7268' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-sm) center;
+  padding-right: calc(var(--space-md) + 16px);
+  cursor: pointer;
+}
+:root:not([data-theme="light"]) select.field__input,
+[data-theme="dark"] select.field__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238aa092' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.field__input:hover:not(:focus) { border-color: var(--color-accent); }
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+/* Tabular numerals for participant-ID inputs and other code-ish entries. */
+.field__input[inputmode="text"][maxlength],
+.field__input[inputmode="numeric"] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+.field__hint { font-size: 0.82rem; color: var(--color-hint); line-height: 1.5; }
+
+/* ── 10. Trial View ────────────────────────────────────── */
+.trial-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+}
+
+/* Standardised molecule container: every structure renders inside a 4:3 box of
+   at most 360x270. The box also shrinks with the viewport height, reserving
+   500px for everything that is not the image, so the whole trial card stays on
+   screen on short windows; it never goes below 120x90. The fixed box keeps the
+   surrounding controls from moving as items load. The background is white; the
+   border and shadow follow the theme tokens. Shared by the practice sessions
+   and the delayed post-test, which both render through practice-engine's
+   .trial-img-wrap. */
+.trial-img-wrap {
+  width: 100%;
+  max-width: 360px;   /* fallback for browsers without min()/max()/calc/dvh */
+  max-width: min(360px, max(120px, calc((100dvh - 500px) * 4 / 3)));
+  /* An explicit height, rather than aspect-ratio, mirroring the width cap so
+     the box holds its 4:3 ratio. */
+  height: 270px;      /* fallback for browsers without min()/max()/calc/dvh */
+  height: min(270px, max(90px, calc(100dvh - 500px)));
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--color-border-2);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm);
+}
+.trial-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+}
+
+/* Practice and delayed-test stimulus (practice-engine.js). The structure is
+   painted as a background image and contained with background-size, so it fits
+   the frame in any orientation without cropping. The parent .trial-img-wrap
+   supplies the box height. The Session 0 familiarity and tutorial widgets use
+   an <img class="trial-img"> instead. */
+.trial-structure {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  user-select: none;
+}
+
+.trial-label {
+  display: block;
+  margin-bottom: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.trial-input-row { display: flex; gap: var(--space-sm); align-items: stretch; }
+.trial-input { flex: 1; min-height: 48px; font-size: 1.05rem; }
+.trial-submit { flex-shrink: 0; min-width: 130px; position: relative; }
+
+@media (max-width: 540px) {
+  /* On phones, the input stacks above the full-width submit button. */
+  .trial-input-row { flex-direction: column; }
+  .trial-submit { width: 100%; }
+}
+
+/* ── 11. Feedback ────────────────────────────────────────────────────────
+   Shown after each practice trial. The block holds the answer pills; the
+   correction panel below carries the rule reminder when the answer is
+   wrong. */
+.feedback-block {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+}
+.feedback-block--correct  { border-color: var(--color-green); }
+.feedback-block--incorrect { border-color: var(--color-red); }
+
+.feedback-pills { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+.pill {
+  padding: 6px 14px;
+  background: var(--color-pill-bg);
+  border: 1px solid var(--color-pill-border);
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+  transition: border-color var(--dur-med) var(--ease-out);
+}
+.pill strong { color: var(--color-text); font-family: var(--font-mono); margin-left: 4px; }
+.pill--correct { border-color: var(--color-green); background: var(--color-green-dim); }
+.pill--wrong   { border-color: var(--color-red);   background: var(--color-red-dim); }
+
+/* ── 12. Warnings / hints ──────────────────────────────── */
+.warn {
+  font-size: 0.92rem;
+  color: var(--color-yellow);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-yellow-dim);
+  border: 1px solid color-mix(in srgb, var(--color-yellow) 30%, transparent);
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+}
+.hint-enter {
+  font-size: 0.85rem;
+  color: var(--color-hint);
+  text-align: center;
+  line-height: 1.5;
+}
+.hint-enter kbd {
+  font-family: var(--font-mono); font-size: 0.78rem; padding: 2px 7px;
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-sm); color: var(--color-text);
+  box-shadow: 0 1px 0 var(--color-border-2);
+  font-variant-numeric: tabular-nums;
+}
+.hint-sm { font-size: 0.85rem; color: var(--color-muted); line-height: 1.55; }
+
+/* ── 13. Instructions toggle ───────────────────────────── */
+.instr-toggle { display: flex; flex-direction: column; gap: var(--space-sm); }
+/* Collapse used by the inline "Show instructions" toggle in session-intro. The
+   open max-height holds the full instructions content without an internal
+   scrollbar, and the transition animates the change. */
+.collapse { overflow: hidden; max-height: 0; transition: max-height 320ms var(--ease-out); }
+.collapse.open { max-height: 4000px; }
+
+/* ── 13a. Instructions content (cloned from #instructionsContentTpl) ─── */
+/* Used in three places: full-page #view-instructions, inline session-intro
+   dropdown #inlineInstrPanel, and the auto-expanded landing-card panel. */
+.instructions-mount { width: 100%; }
+.instructions-content {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+.instructions-content__heading {
+  font-size: 1.2rem;
+  margin: 0 0 var(--space-md) 0;
+  text-align: center;
+  color: var(--color-text);
+}
+.instructions-content__section {
+  font-size: 1.02rem;
+  margin: var(--space-lg) 0 var(--space-sm) 0;
+  color: var(--color-text);
+}
+.instructions-content__footnote {
+  margin: var(--space-md) 0 0 0;
+  font-size: 0.78rem;
+  color: var(--color-hint);
+  text-align: center;
+  font-style: italic;
+}
+.instructions-content code {
+  font-family: var(--font-mono);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-2);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 0.88em;
+}
+.instructions-content kbd {
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  padding: 1px 5px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-2);
+  border-radius: 3px;
+}
+
+/* Condition-summary table */
+.instructions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-md) 0;
+  font-size: 0.85rem;
+}
+.instructions-table thead th {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border-2);
+  vertical-align: top;
+}
+.instructions-table tbody td {
+  vertical-align: top;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border-2);
+  background: var(--color-surface);
+}
+.instructions-table__list {
+  margin: 0;
+  padding-left: 1.1em;
+  list-style: disc;
+}
+.instructions-table__list li { margin-bottom: 2px; }
+
+/* Numbered steps */
+.instructions-steps {
+  margin: var(--space-sm) 0;
+  padding-left: 1.6em;
+}
+.instructions-steps li {
+  padding-left: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+.instructions-steps strong { color: var(--color-text); }
+
+/* Tips two-column */
+.instructions-tips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-top: var(--space-sm);
+}
+.instructions-tips__heading {
+  font-size: 0.95rem;
+  margin: 0 0 var(--space-xs) 0;
+}
+.instructions-tips__callout {
+  background: var(--color-surface-2);
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-sm) 0 0 0;
+  font-size: 0.85rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.instructions-tips__list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.instructions-tips__list li { margin-bottom: var(--space-xs); }
+
+@media (max-width: 600px) {
+  .instructions-tips { grid-template-columns: 1fr; }
+  .instructions-table { font-size: 0.8rem; }
+  .instructions-table thead th,
+  .instructions-table tbody td { padding: 8px 10px; }
+}
+
+/* ── 13b. Landing instructions panel (collapsible, auto-expanded on land) ─ */
+.instructions-landing {
+  margin-bottom: var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.instructions-landing__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface-2);
+  border: none;
+  border-bottom: 1px solid var(--color-border-2);
+  cursor: pointer;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+}
+.instructions-landing__toggle:hover { background: var(--color-surface); }
+.instructions-landing__chevron {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 0.78rem;
+  color: var(--color-hint);
+}
+.instructions-landing__toggle.is-collapsed .instructions-landing__chevron {
+  transform: rotate(180deg);
+}
+.instructions-landing__toggle.is-collapsed {
+  border-bottom-color: transparent;
+}
+.instructions-landing__body {
+  padding: var(--space-md);
+}
+.instructions-landing__body[hidden] { display: none; }
+
+/* ── 14. Summary stats ─────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+}
+.stat-card {
+  background: var(--color-surface-2); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--space-md);
+  display: flex; flex-direction: column; gap: var(--space-xs);
+}
+.stat-card__value {
+  font-family: var(--font-mono); font-size: 1.6rem;
+  font-weight: 500; color: var(--color-accent); line-height: 1;
+}
+.stat-card__label {
+  font-size: 0.78rem; color: var(--color-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* ── 15. Toast ─────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: var(--space-lg); left: 50%;
+  transform: translateX(-50%); z-index: 100;
+  background: var(--color-surface-2); border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md); padding: 12px 20px;
+  font-size: 0.9rem; color: var(--color-text);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5); white-space: nowrap;
+  animation: toastIn 250ms var(--ease-out); pointer-events: none;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── 16. Confetti canvas ───────────────────────────────── */
+/* z-index: 9999 puts confetti above everything: modals (300), theme toggle (200), topbar (50) */
+#confettiCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+
+/* ── 17. Theme toggle ──────────────────────────────────── */
+/* Floating theme toggle. Sits bottom-right on every page and uses the same
+   shadow tokens as the cards. */
+.theme-toggle {
+  position: fixed; bottom: var(--space-lg); right: var(--space-lg);
+  z-index: 200; width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--color-border-2); background: var(--color-surface);
+  color: var(--color-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-md);
+  transition:
+    background-color var(--dur-med) var(--ease-out),
+    border-color    var(--dur-med) var(--ease-out),
+    color           var(--dur-med) var(--ease-out),
+    box-shadow      var(--dur-med) var(--ease-out),
+    transform       var(--dur-med) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+.theme-toggle:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+/* ── 18. Confirmation modal ────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-md);
+  animation: fadeIn 150ms ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-lg); padding: var(--space-xl);
+  max-width: 440px; width: 100%;
+  display: flex; flex-direction: column; gap: var(--space-md);
+  animation: modalIn 200ms var(--ease-out);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal__title { font-size: 1.15rem; font-weight: 700; color: var(--color-text); }
+.modal__body  { font-size: 0.92rem; color: var(--color-muted); line-height: 1.6; }
+.modal__footer { display: flex; gap: var(--space-sm); justify-content: flex-end; flex-wrap: wrap; }
+
+/* ── 19. Footer ────────────────────────────────────────── */
+.site-footer {
+  text-align: center; padding: var(--space-lg) var(--space-md);
+  font-size: 0.78rem; color: var(--color-hint);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── 20. Prompt text ─────────────────────────────────────────────────────
+   The fill-in-the-blank prompt. Monospaced and set large as the visual focus
+   of the trial. The chip background is one step lighter than the page:
+   cream on cream in light mode, forest on eclipse in dark mode. */
+.prompt-text {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent-dim) 50%, var(--color-surface));
+  border: 1.5px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  letter-spacing: 0.04em;
+  margin: 0;
+  white-space: normal;
+  word-break: break-word;
+}
+/* Fill-in-the-blank underline. The width is fixed and does not vary with the
+   length of the expected answer, so the line carries no clue about it. It sits
+   just below the text baseline, where an underscore glyph would. */
+.blank {
+  display: inline-block;
+  width: 6ch;
+  height: 0;
+  border-bottom: 2.5px solid currentColor;
+  margin: 0 4px;
+  /* Negative vertical-align pushes the box (and therefore the bottom border)
+     below the text baseline, matching where an underscore glyph naturally
+     sits in most fonts. */
+  vertical-align: -0.22em;
+}
+
+/* After submit, revealPromptAnswer in practice-engine.js swaps the .blank span
+   for a .blank-filled span, which shows the correct feature inline and marks
+   it right or wrong. */
+.blank-filled {
+  display: inline-block;
+  padding: 0 4px;
+  margin: 0 2px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  animation: blankFill var(--dur-slow) var(--ease-out) both;
+}
+.blank-filled--correct {
+  color: var(--color-green);
+  background: color-mix(in srgb, var(--color-green) 14%, transparent);
+}
+.blank-filled--wrong {
+  color: var(--color-red);
+  background: color-mix(in srgb, var(--color-red) 14%, transparent);
+}
+@keyframes blankFill {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blank-filled { animation: none; }
+}
+.prompt-text--revealed {
+  border-color: var(--color-green);
+  background: color-mix(in srgb, var(--color-green-dim) 70%, var(--color-surface));
+}
+
+/* ── 21. Trial timer ─────────────────────────────────────────────────────
+   The countdown above the input. Mono with tabular numerals so the digit
+   does not jitter as it ticks. Color steps token-mapped per state. */
+.trial-timer {
+  flex: 0 0 auto;
+  min-width: 2.8em;            /* stable width so the bar does not jump 20s -> 9s */
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: right;
+  color: var(--color-muted);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  transition: color var(--dur-med) var(--ease-out);
+}
+.trial-timer--warning { color: var(--color-yellow); }
+.trial-timer--urgent  { color: var(--color-red); }
+
+/* Countdown bar + number on one row, spanning the full prompt-box width.
+   Cosmetic only: the authoritative 20s limit is the JS interval in
+   practice-engine.js, and rt_ms is measured off performance.now(). The fill
+   animates from full to empty, green -> yellow -> red, over the trial's timerMs
+   (set inline by runTrial). */
+.trial-timer-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;                 /* match the full-width .prompt-text box */
+  margin: var(--space-xs) 0 0;
+}
+.trial-timer-bar {
+  flex: 1 1 auto;              /* fill the row beside the number */
+  height: 8px;
+  background: var(--color-border);
+  border-radius: var(--radius-pill, 999px);
+  overflow: hidden;
+}
+.trial-timer-bar__fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  background: hsl(125, 62%, 42%);
+}
+@keyframes trial-timer-deplete {
+  0%   { transform: scaleX(1);    background: hsl(125, 62%, 42%); }
+  55%  { transform: scaleX(0.45); background: hsl(50, 90%, 50%); }
+  100% { transform: scaleX(0);    background: hsl(2, 80%, 52%); }
+}
+
+/* ── 22. Correction panel ────────────────────────────────────────────────
+   Shown after a wrong practice answer, carrying the naming-rule reminder.
+   Uses the yellow and amber tokens so the colour follows the theme. An amber
+   accent bar runs down the left edge over a soft yellow-tinted background.*/
+.correction-panel {
+  margin-top: var(--space-md);
+  border: 1px solid var(--color-yellow);
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-yellow-dim);
+  box-shadow: var(--shadow-sm);
+}
+
+.correction-panel__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-yellow);
+  background: transparent;
+  padding: var(--space-sm) var(--space-md) 0;
+  margin: 0;
+}
+.correction-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: var(--space-2xs) var(--space-md) 0;
+  color: var(--color-text);
+}
+.correction-panel__rule,
+.correction-rule {
+  margin: 0;
+  padding: var(--space-xs) var(--space-md) var(--space-sm);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+.correction-panel__target {
+  margin: 0;
+  padding: var(--space-xs) var(--space-md) var(--space-sm);
+  border-top: 1px solid color-mix(in srgb, var(--color-yellow) 30%, transparent);
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.correction-panel__target strong {
+  font-family: var(--font-mono);
+  font-size: 1.02em;
+  color: var(--color-text);
+}
+[data-theme="dark"] .correction-panel__target {
+  background: var(--color-surface-2);
+  color: var(--color-yellow);
+}
+[data-theme="dark"] .correction-panel__target strong {
+  color: var(--color-yellow);
+}
+
+/* Optional "show numbering of carbons" helper (wrong-answer feedback only). */
+.trial-number-btn {
+  display: block;
+  margin: var(--space-md) auto 0;
+  font-size: 0.85rem;
+}
+
+/* ── 23. Next question row ─────────────────────────────── */
+.trial-next-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-top: var(--space-md); justify-content: flex-end;
+}
+.btn--next { font-size: 0.95rem; padding: 0.55rem 1.2rem; }
+
+/* ── 24. Mobile ────────────────────────────────────────── */
+/* .trial-img fills .trial-img-wrap, which caps its own width and height, so
+   no per-breakpoint max-height overrides are needed here. */
+@media (max-width: 600px) {
+  .card__header, .card__body, .card__footer {
+    padding-left: var(--space-lg); padding-right: var(--space-lg);
+  }
+  .card__header { padding-top: var(--space-lg); }
+  .card__footer { padding-bottom: var(--space-lg); }
+  .trial-card { padding: var(--space-lg); }
+  .card__title  { font-size: 1.3rem; }
+  .trial-input-row { flex-direction: column; }
+  .trial-submit { width: 100%; }
+  .card__footer--row { flex-direction: column; align-items: stretch; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .theme-toggle { bottom: var(--space-md); right: var(--space-md); }
+}
+@media (max-width: 480px) {
+  .trial-img-wrap { border-radius: var(--radius-sm); }
+}
+@media (max-width: 380px) {
+  .card__header, .card__body, .card__footer {
+    padding-left: var(--space-md); padding-right: var(--space-md);
+  }
+  .trial-card { padding: var(--space-md); }
+}
+
+/* ══ Landing, Demo, Modal, Footer ════════════════════════ */
+
+/* ── Page footer ─────────────────────────────────────────── */
+.page-footer {
+  text-align: center; padding: var(--space-lg) var(--space-md);
+  font-size: 0.78rem; color: var(--color-hint);
+  font-family: var(--font-mono);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── Modal ───────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px); z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-md); animation: fadeIn 150ms ease both;
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal {
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-lg); padding: var(--space-xl);
+  max-width: 420px; width: 100%;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  animation: modalIn 200ms var(--ease-out) both;
+}
+@keyframes modalIn {
+  from { opacity:0; transform:scale(0.95) translateY(8px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.modal__title { font-size: 1.2rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-sm); }
+.modal__body  { font-size: 0.92rem; color: var(--color-muted); line-height: 1.6; margin-bottom: var(--space-lg); }
+.modal__actions { display: flex; gap: var(--space-sm); justify-content: flex-end; flex-wrap: wrap; }
+
+/* ── Landing main wrapper ────────────────────────────────── */
+.landing-main { max-width: 960px; margin: 0 auto; padding: 0 var(--space-md); }
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  padding: 80px 0 64px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+}
+.hero__eyebrow {
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-accent); margin-bottom: var(--space-md);
+}
+.hero__title {
+  font-size: clamp(2rem, 5vw, 3rem); font-weight: 700;
+  line-height: 1.15; letter-spacing: -0.03em;
+  color: var(--color-text); margin-bottom: var(--space-md);
+}
+.hero__title .accent { color: var(--color-accent); }
+.hero__desc { font-size: 1.05rem; color: var(--color-muted); line-height: 1.7; margin-bottom: var(--space-xl); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.hero__visual { display: flex; justify-content: center; align-items: center; }
+
+.hero-card-stack { position: relative; width: 280px; height: 210px; }
+.hero-card-stack__card {
+  position: absolute; width: 240px;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+}
+.hero-card-stack__card:nth-child(1) { top: 28px; left: 28px; transform: rotate(5deg); opacity: 0.4; z-index: 1; }
+.hero-card-stack__card:nth-child(2) { top: 14px; left: 14px; transform: rotate(2.5deg); opacity: 0.65; z-index: 2; }
+.hero-card-stack__card:nth-child(3) { top: 0; left: 0; z-index: 3; border-color: var(--color-border-2); }
+.hero-card__label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); }
+.hero-card__molecule { font-size: 1.9rem; text-align: center; padding: var(--space-sm) 0; }
+.hero-card__prompt { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-muted); text-align: center; }
+
+/* ── CTAs section ────────────────────────────────────────── */
+.ctas-section { padding: 48px 0; border-top: 1px solid var(--color-border); }
+.ctas-section__title {
+  font-size: 0.75rem; font-family: var(--font-mono);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--color-hint); margin-bottom: var(--space-xl);
+}
+.cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+.cta-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); padding: var(--space-xl) var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-md);
+  transition: border-color var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
+  text-decoration: none; cursor: pointer;
+}
+.cta-card:hover {
+  border-color: var(--color-accent); transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(34,197,94,0.1);
+}
+.cta-card__icon { font-size: 1.8rem; line-height: 1; }
+.cta-card__title { font-size: 1.05rem; font-weight: 700; color: var(--color-text); }
+.cta-card__desc { font-size: 0.88rem; color: var(--color-muted); line-height: 1.6; flex: 1; }
+.cta-card__link { font-size: 0.85rem; font-weight: 600; color: var(--color-accent); font-family: var(--font-mono); display: flex; align-items: center; gap: 4px; }
+
+/* ── FAQ section ─────────────────────────────────────────── */
+.faq-section { padding: 48px 0; border-top: 1px solid var(--color-border); }
+.faq-section__header { margin-bottom: var(--space-xl); }
+.section-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-sm); }
+.section-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--color-text); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+.faq-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); }
+.faq-item__q { font-weight: 700; font-size: 0.92rem; color: var(--color-text); margin-bottom: var(--space-sm); }
+.faq-item__a { font-size: 0.88rem; color: var(--color-muted); line-height: 1.65; }
+
+/* ── About section ───────────────────────────────────────── */
+.about-section { padding: 48px 0; border-top: 1px solid var(--color-border); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.about__text { font-size: 0.95rem; color: var(--color-muted); line-height: 1.75; }
+.about__text p + p { margin-top: var(--space-md); }
+.about__meta {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--space-lg);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+}
+.about__meta-item { display: flex; flex-direction: column; gap: 2px; padding-bottom: var(--space-sm); border-bottom: 1px solid var(--color-border); }
+.about__meta-item:last-child { border-bottom: none; padding-bottom: 0; }
+.about__meta-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-hint); }
+.about__meta-value { font-size: 0.88rem; color: var(--color-text); }
+
+/* ── Contact section ─────────────────────────────────────── */
+.contact-section { padding: 48px 0 64px; border-top: 1px solid var(--color-border); }
+.contact-form { max-width: 520px; display: flex; flex-direction: column; gap: var(--space-md); }
+.contact-form textarea.field__input { resize: vertical; min-height: 120px; font-family: var(--font-body); }
+
+/* ── Demo badge ──────────────────────────────────────────── */
+.demo-badge {
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-yellow); background: var(--color-yellow-dim);
+  border: 1px solid rgba(240,180,41,0.25); border-radius: var(--radius-pill); padding: 4px 12px;
+}
+
+/* ── Landing responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; padding: 48px 0 40px; gap: 32px; }
+  .hero__visual { order: -1; }
+  .cta-grid { grid-template-columns: 1fr; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+@media (max-width: 600px) {
+  .hero__actions { flex-direction: column; }
+  .hero__actions .btn { width: 100%; }
+}

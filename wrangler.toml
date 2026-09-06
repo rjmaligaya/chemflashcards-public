@@ -1,0 +1,91 @@
+# ═══════════════════════════════════════════════════════════
+# wrangler.toml — Cloudflare Worker config for the v2 site.
+#
+# Architecture (post-migration 2026-05-21):
+#   - Single Worker named `chemflashcards`, deployed via git-connected
+#     Workers Build CI on every push to master.
+#   - The Worker serves BOTH static files (via the [assets] block) AND
+#     API endpoints (via worker.mjs's fetch handler).
+#   - Custom domain chemflashcards.com is attached to this Worker.
+#
+# The previous separate `srp-study-worker` Worker is retired (delete via
+# the dashboard once this new setup is verified).
+# ═══════════════════════════════════════════════════════════
+
+name       = "chemflashcards"
+main       = "worker.mjs"
+compatibility_date = "2024-09-23"
+
+# ── Custom domain (chemflashcards.com) ────────────────────
+# Declared here so `wrangler deploy` PRESERVES the custom domain instead of
+# stripping it. The domain was originally attached via the Cloudflare dashboard
+# and was never written into this file; a local deploy during a Workers Builds
+# outage (2026-07-02) warned it would remove the remote route. Declaring what is
+# already live makes the deploy a no-op for the domain. Top-level on purpose:
+# the live Worker is the top-level `chemflashcards`, deployed with `wrangler
+# deploy` (no --env).
+routes = [
+  { pattern = "chemflashcards.com", custom_domain = true }
+]
+
+# Keep the workers.dev subdomain and per-version preview URLs ENABLED. Declaring
+# `routes` above makes wrangler default both to false; the live Worker has both
+# on (the *.workers.dev URL is used for DEV testing and is whitelisted in the
+# ALLOWED_ORIGIN secret), so pin them true to keep the deploy a no-op for them.
+workers_dev  = true
+preview_urls = true
+
+# ── Static assets (served when the request path matches a file) ──
+# Only files under `public/` are served. worker.mjs, wrangler.toml,
+# schema*.sql, test_*.mjs, and other root-level files stay private.
+# Anything not matching a static file falls through to worker.mjs's fetch
+# handler, so /api/v2/* still hits the Worker as before.
+[assets]
+directory = "./public"
+
+# ── D1 Database (v1, frozen — kept for read-only access to v1 data) ──
+[[d1_databases]]
+binding       = "DB"
+database_name = "ssp-study-01"
+database_id   = "711f04ad-618d-47b6-bc47-3ca828056a2f"
+
+# ── D1 Database (v2, active — within-subjects rebuild) ────
+# Created 2026-05-20 via `wrangler d1 create ssp-study-02`.
+# Schema deployed via: wrangler d1 execute ssp-study-02 --file=schema_v2.sql --remote
+[[d1_databases]]
+binding       = "DB_V2"
+database_name = "ssp-study-02"
+database_id   = "bca5caff-edb0-43ff-ad03-bcf6a697ec72"
+
+# ── R2 Bucket (raw CSV backups) ───────────────────────────
+[[r2_buckets]]
+binding     = "RESULTS"
+bucket_name = "ssp-results"
+
+# ── Observability ─────────────────────────────────────────
+# Mirrors the dashboard settings (Settings → Observability → Logs:
+# Enabled). Keeps logs-on consistent across redeployments so future
+# debugging always has the worker console.error output available.
+[observability]
+enabled            = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled            = true
+head_sampling_rate = 1
+persist            = true
+invocation_logs    = true
+
+[observability.traces]
+enabled            = false
+persist            = true
+head_sampling_rate = 1
+
+# ── Environment: local dev ────────────────────────────────
+[env.dev]
+vars = { ALLOWED_ORIGIN = "*" }   # relax CORS for local dev
+
+# ── Environment: production ───────────────────────────────
+# ALLOWED_ORIGIN is set via: wrangler secret put ALLOWED_ORIGIN
+[env.production]
+# No vars here — secret is set via dashboard or CLI

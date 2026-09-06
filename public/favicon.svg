@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Flashcard background -->
+  <rect x="6" y="10" width="52" height="44" rx="7" ry="7" fill="#0d1410" stroke="#22c55e" stroke-width="2.5"/>
+  <!-- Card shine/header strip -->
+  <rect x="6" y="10" width="52" height="13" rx="7" ry="7" fill="#16a34a" opacity="0.25"/>
+  <rect x="6" y="17" width="52" height="6" fill="#16a34a" opacity="0.25"/>
+  <!-- Benzene ring: hexagon + inner circle, centred at 32,38 r=11 -->
+  <!-- Hexagon vertices at r=11 -->
+  <polygon points="32,27 41.5,32.5 41.5,43.5 32,49 22.5,43.5 22.5,32.5"
+           fill="none" stroke="#22c55e" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Alternating double-bond arcs (inner circle) -->
+  <circle cx="32" cy="38" r="6.2" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="5.5 4.2" stroke-dashoffset="1"/>
+</svg>

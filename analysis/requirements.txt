@@ -1,0 +1,15 @@
+# Python packages the ChemFlashcards analysis scripts need.
+# Install once with:   pip install -r requirements.txt
+# All are standard, widely-used, offline open-source packages. Nothing here
+# sends your data anywhere; the scripts read local files and write local files.
+
+pandas>=2.0        # data tables / CSV + Excel reading
+numpy>=1.24        # numerics
+openpyxl>=3.1      # reading/writing .xlsx workbooks (the export format)
+scipy>=1.10        # paired t-test, distributions
+statsmodels>=0.14  # repeated-measures ANOVA fallback
+matplotlib>=3.7    # plots
+
+# --- SPSS-parity layer (recommended; scripts degrade gracefully without them) ---
+pingouin>=0.5      # SPSS-style output for t-tests, RM-ANOVA, correlations
+pyreadstat>=1.2    # write .sav SPSS data files so results can be reproduced in SPSS

@@ -1,0 +1,13 @@
+slot_map_version,item_id,group,feature,target,root,suffix,suffix_locant,subst_id,subst_locant,n_feature_slots,n_form_slots,notes
+v1,C1-S1-iodo-full,C-1,iodo,iodoethane,eth,ane,NA,iodo,NA,3,3,"Ethane is symmetric, so no substituent locant is required and 1- is redundant but harmless."
+v1,C1-S2-amide-full,C-1,amide,pentanamide,pent,amide,NA,NA,NA,2,3,"Primary amide, no locant required."
+v1,C1-S2-hex-full,C-1,hex,hex-3-ene,hex,ene,3,NA,NA,3,3,"Suffix locant taught explicitly; legacy 3-hexene is a valid variant."
+v1,C1-S2-ol-full,C-1,ol,cyclopentanol,cyclopent,ol,NA,NA,NA,2,3,"CANDIDATE SPLIT: root conflates ring identity (cyclo) with chain length (pent). See note R1."
+v1,C1-S3-al-full,C-1,al,propanal,prop,al,NA,NA,NA,2,3,"Aldehyde suffix implies C1, no locant."
+v1,C1-S3-fluoro-full,C-1,fluoro,1-fluorohexane,hex,ane,NA,fluoro,1,4,3,"Halide locant taught explicitly (Appendix D.11)."
+v1,C2-S1-one-full,C-2,one,heptan-2-one,hept,one,2,NA,NA,3,3,"Elision of -an- is a production-form defect, not a feature defect. See note R2."
+v1,C2-S2-chloro-full,C-2,chloro,1-chloroheptane,hept,ane,NA,chloro,1,4,3,"Halide locant taught explicitly."
+v1,C2-S2-oate-full,C-2,oate,methyl octanoate,oct,oate,NA,methyl,NA,3,3,"Ester two-word structure and acyl/alkyl order taught explicitly; both are assembly slots."
+v1,C2-S3-bromo-full,C-2,bromo,2-bromobutane,but,ane,NA,bromo,2,4,3,"Halide locant taught explicitly."
+v1,C2-S3-iso-full,C-2,iso,iso-butyl bromide,but,bromide,NA,iso,NA,3,3,"Functional-class name; suffix slot holds the class word rather than a systematic suffix."
+v1,C2-S3-tert-full,C-2,tert,tert-butyl chloride,but,chloride,NA,tert,NA,3,3,"Functional-class name; suffix slot holds the class word."

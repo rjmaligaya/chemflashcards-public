@@ -1,0 +1,48 @@
+.wrangler/
+.claude/
+
+# Project-local working files (not deployed, not version controlled)
+tmp_xlsx_review/
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Editor / OS noise
+.vscode/
+.idea/
+
+# Local node_modules in case anyone adds them later
+node_modules/
+
+# Local-only archives & build tools (moved to the Desktop backup 2026-06-15; not in git)
+v1_backup/
+v2_svg_backup_*/
+tools/
+
+# Thesis context pack — local reference material, deliberately kept out of the website repo
+Context/
+
+# ── Participant data — NEVER COMMIT ─────────────────────────────────────────
+# Everything under analysis/participant-data/ is real participant data or
+# output derived from it (raw export, result tables, figures, .sav files, and
+# the Q-full coding sheets, which carry real PIDs and raw typed answers). The
+# analysis scripts default their inputs and outputs into this folder, so the
+# separation holds without anyone having to remember it. See
+# analysis/participant-data/README.txt.
+analysis/participant-data/
+
+# Belt-and-braces: catch participant-derived output even if it lands outside
+# the folder above (e.g. a script run with an explicit --out).
+analysis/results/
+analysis/data/
+analysis/**/results_4_2/
+analysis/sample_data/
+analysis/rubric/coding_qfull_v1.csv
+analysis/rubric/qfull_blind_sheet.csv
+analysis/rubric/Qfull_coding_card_v1.xlsx
+*_PID_MAPPING_DO_NOT_SHARE.csv
+*_SHAREABLE.xlsx
+
+# Python bytecode from the analysis scripts
+__pycache__/
+*.pyc

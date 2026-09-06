@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tester hub · ChemFlashcards</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="v2-style.css">
+  <style>
+    /* Tester hub. Lab/tester-facing only; clean but utilitarian, mirrors
+       admin.html. All colors use design tokens so it tracks the theme. */
+    .hub-wrap { max-width: 820px; margin: var(--space-2xl) auto; padding: 0 var(--space-md); }
+    .hub-title { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 var(--space-2xs); color: var(--color-text); }
+    .hub-subtitle { color: var(--color-muted); margin: 0 0 var(--space-lg); font-size: 0.95rem; line-height: 1.5; }
+
+    .hub-banner {
+      padding: var(--space-sm) var(--space-md); background: var(--color-yellow-dim);
+      border: 1px solid color-mix(in srgb, var(--color-yellow) 50%, transparent);
+      border-left-width: 4px; border-radius: var(--radius-md); color: var(--color-text);
+      font-size: 0.88rem; line-height: 1.5; margin-bottom: var(--space-lg);
+    }
+    .hub-banner strong { color: var(--color-yellow); }
+
+    .hub-howto { margin: 0 0 var(--space-lg); padding-left: 1.1rem; color: var(--color-text); font-size: 0.92rem; line-height: 1.6; }
+    .hub-howto li { margin-bottom: 4px; }
+
+    .hub-optbar { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md); flex-wrap: wrap; }
+    .hub-optbar .hub-optlabel { font-size: 0.9rem; color: var(--color-muted); }
+    .hub-seg { display: inline-flex; gap: 4px; }
+    .hub-seg button {
+      cursor: pointer; border: 1px solid var(--color-border-2); background: var(--color-bg);
+      color: var(--color-text); border-radius: var(--radius-sm); padding: 7px 14px;
+      font-size: 0.85rem; font-weight: 600; min-height: 40px;
+    }
+    .hub-seg button[aria-pressed="true"] { background: var(--color-accent, #0d9488); border-color: var(--color-accent, #0d9488); color: #fff; }
+
+    .hub-list { display: flex; flex-direction: column; gap: var(--space-xs); }
+    .hub-item {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);
+      padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-border-2);
+      border-radius: var(--radius-md); background: var(--color-surface, var(--color-bg));
+    }
+    .hub-item__text { min-width: 0; }
+    .hub-item__label { font-weight: 600; color: var(--color-text); font-size: 0.96rem; }
+    .hub-item__note { color: var(--color-muted); font-size: 0.82rem; margin-top: 2px; }
+    .hub-item__file { font-family: var(--font-mono); font-size: 0.74rem; color: var(--color-muted); }
+    .hub-open { flex: 0 0 auto; min-height: 42px; padding: 8px 18px; }
+
+    .hub-footer { margin-top: var(--space-xl); color: var(--color-muted); font-size: 0.82rem; line-height: 1.5; }
+    .hub-footer a { color: var(--color-text); }
+
+    @media (max-width: 540px) {
+      .hub-item { flex-direction: column; align-items: stretch; }
+      .hub-open { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a href="index.html" class="topbar__logo">ChemFlashcards</a>
+      <nav class="topbar__nav">
+        <a href="admin.html" class="btn btn--ghost btn--sm">Admin / review</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hub-wrap">
+    <h1 class="hub-title">Tester hub</h1>
+    <p class="hub-subtitle">For the research team. Open any page below to try it out, and leave edit requests right on the page.</p>
+
+    <div class="hub-banner">
+      <strong>This is a safe sandbox.</strong> Each page you open gets a brand-new <em>test identity</em>, so nothing
+      you do here is mixed in with real participant data. You can click around, finish or abandon a session, and start
+      over as many times as you like.
+    </div>
+
+    <ol class="hub-howto">
+      <li><strong>Pick an option</strong> below (most testing can stay on Option 1 — it just changes which word-set is which).</li>
+      <li><strong>Click “Open”</strong> on any page. It opens with a fresh test identity, so you’ll never be told a session is “already done.”</li>
+      <li><strong>To request an edit:</strong> on any page, use the dark <strong>Tester</strong> bar in the bottom-right corner. Click <strong>“✎ Request edit”</strong>, then click anything you’d like changed and type a note. Add as many as you want, then press <strong>Send</strong>.</li>
+      <li>Want to see a session’s later screens without doing every question? Open it, then use the bar’s <strong>↻ Restart</strong> or jump via <strong>Pages</strong> any time.</li>
+    </ol>
+
+    <div class="hub-optbar">
+      <span class="hub-optlabel">Counterbalance:</span>
+      <span class="hub-seg" id="optSeg" role="group" aria-label="Counterbalance option">
+        <button type="button" data-opt="1" aria-pressed="true">Option 1</button>
+        <button type="button" data-opt="2" aria-pressed="false">Option 2</button>
+      </span>
+    </div>
+
+    <div class="hub-list" id="hubList"></div>
+
+    <p class="hub-footer">
+      Each “Open” creates a throwaway test id (tagged <code>dev_mode</code>) and is filtered out of analysis.
+      Edit requests you send are collected for the study coordinator to review in
+      <a href="admin.html">Admin / review</a>. This page is not linked anywhere public.
+    </p>
+  </main>
+
+  <script>
+    // Theme parity with the rest of the site.
+    (function () {
+      var stored = localStorage.getItem('cfc-theme');
+      document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
+    })();
+  </script>
+
+  <script type="module">
+    import { TESTER_PAGES, openAsFreshTester } from "./tester-tools.js";
+
+    let option = 1;
+
+    // Option toggle.
+    const seg = document.getElementById("optSeg");
+    seg.addEventListener("click", e => {
+      const btn = e.target.closest("button[data-opt]");
+      if (!btn) return;
+      option = Number(btn.dataset.opt);
+      seg.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.opt) === option)));
+    });
+
+    // Render the page list.
+    const list = document.getElementById("hubList");
+    for (const p of TESTER_PAGES) {
+      const open = document.createElement("button");
+      open.className = "btn btn--primary hub-open";
+      open.textContent = "Open →";
+      open.addEventListener("click", async () => {
+        open.disabled = true; open.textContent = "Opening…";
+        await openAsFreshTester(p.file, option);   // navigates away on success
+        // If we're still here after a moment, enrollment probably failed.
+        setTimeout(() => { open.disabled = false; open.textContent = "Open →"; }, 4000);
+      });
+
+      const text = document.createElement("div");
+      text.className = "hub-item__text";
+      const label = document.createElement("div");
+      label.className = "hub-item__label";
+      label.textContent = p.label;
+      const note = document.createElement("div");
+      note.className = "hub-item__note";
+      note.textContent = p.note || "";
+      const file = document.createElement("div");
+      file.className = "hub-item__file";
+      file.textContent = p.file;
+      text.append(label, note, file);
+
+      const item = document.createElement("div");
+      item.className = "hub-item";
+      item.append(text, open);
+      list.appendChild(item);
+    }
+  </script>
+</body>
+</html>

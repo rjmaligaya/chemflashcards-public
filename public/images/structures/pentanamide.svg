@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no" ?>
+<svg width="162px" height="72px" viewBox="-9.00 -42.50 161.54 72.25" style="background-color: #ffffff00" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 0.00,0.00 L 22.08,12.75 L 44.17,0.00 L 66.25,12.75 L 88.33,0.00 L 107.65,11.15" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 88.33,0.00 L 88.33,-16.54" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 83.23,-2.00 L 83.23,-14.54" />
+<text x="88.33" y="-19.90" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle">O</text>
+<text x="110.42" y="18.35" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="start">NH</text>
+<text x="137.54" y="21.35" fill="#000000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">2</text>
+</svg>

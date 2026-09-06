@@ -1,0 +1,14 @@
+{
+  "name": "chemflashcards",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Spaced retrieval practice for organic chemistry nomenclature. QCER Lab, Queen's University.",
+  "type": "module",
+  "scripts": {
+    "test:engine":  "node test_practice-engine.mjs",
+    "test:routing": "node test_routing-v2.mjs",
+    "test:worker":  "node test_worker-v2.mjs",
+    "test:gate":    "node test_session-gate.mjs",
+    "test": "node test_routing-v2.mjs && node test_practice-engine.mjs && node test_worker-v2.mjs && node test_session-gate.mjs"
+  }
+}

@@ -1,0 +1,8 @@
+# Baseline questionnaire transcription template -- ONE ROW PER PARTICIPANT.
+# Transcribe the paper questionnaire (Questionnaire-2026-06-04) into this file.
+# Lines starting with '#' are ignored. See baseline_codebook.md for coding.
+# `pid` MUST exactly match the participant ids used in the app export.
+# Pass this file to 4.2.vi with:  --baseline path/to/this_file.csv
+pid,q1_language,q3_age,q4_affiliation,q7_last_chem_course,q9_iupac_familiarity,q10_answer,q10_named_correct
+# example row (delete the leading '#' and edit, or just add your own rows below):
+# 01-90001,English,20,Undergraduate student,Undergraduate-level,2,iodoethane,1

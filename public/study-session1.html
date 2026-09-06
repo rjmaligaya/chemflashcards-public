@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice session 1 — ChemFlashcards</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="v2-style.css">
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a href="index.html" class="topbar__logo">ChemFlashcards</a>
+      <nav class="topbar__nav">
+        <a href="study.html" class="btn btn--ghost btn--sm">Cancel</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="practice-app">
+    <p style="text-align:center;margin:80px auto;">Loading...</p>
+  </main>
+
+  <script type="module">
+    import { runSpacedSessionPage } from "./spaced-session-page.js";
+    runSpacedSessionPage(1);
+  </script>
+  <!-- Tester tools: self-gating; renders only when the URL carries a DEV test id. Invisible to real participants. -->
+  <script type="module" src="tester-tools.js"></script>
+</body>
+</html>

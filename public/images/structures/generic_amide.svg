@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no" ?>
+<svg width="104px" height="73px" viewBox="-18.00 -42.50 104.29 73.25" style="background-color: #ffffff00" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<circle cx="0.00" cy="12.75" r="9.00" fill="#41506a" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 9.53,7.25 L 22.08,0.00" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 22.08,0.00 L 22.08,-16.54" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 16.98,-2.00 L 16.98,-14.54" />
+<path stroke="#000000" stroke-width="1.7" stroke-linecap="butt" stroke-linejoin="miter" fill="none" d="M 22.08,0.00 L 41.40,11.15" />
+<text x="22.08" y="-19.90" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle">O</text>
+<text x="44.17" y="18.35" fill="#000000" font-family="Arial" font-weight="bold" font-size="16" text-anchor="start">NH</text>
+<text x="71.29" y="21.35" fill="#000000" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle">2</text>
+</svg>

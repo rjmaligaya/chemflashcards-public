@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChemFlashcards — Study App</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a href="index.html" class="topbar__logo" id="logoLink">ChemFlashcards</a>
+      <nav class="topbar__nav">
+        <a href="index.html"         class="btn btn--ghost btn--sm">Home</a>
+        <a href="index.html#about"   class="btn btn--ghost btn--sm">About</a>
+        <a href="index.html#contact" class="btn btn--ghost btn--sm">Contact</a>
+        <button id="instrBtn" class="btn btn--ghost btn--sm" aria-label="View instructions">Instructions</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══ PROGRESS BAR ═══ -->
+  <div class="progress-bar" id="progressBar" role="progressbar"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+    <div class="progress-bar__fill" id="progressFill"></div>
+  </div>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main" id="main">
+
+    <!-- INSTRUCTIONS (full-page) -->
+    <section id="view-instructions" class="view card" hidden aria-label="Instructions">
+      <div class="card__header">
+        <h2 class="card__title">Instructions</h2>
+        <p class="card__subtitle">Read carefully before starting.</p>
+      </div>
+      <div class="card__body">
+        <div id="instrFullContent" class="instructions-mount"></div>
+      </div>
+      <div class="card__footer">
+        <button id="backFromInstr" class="btn btn--primary">Back to Start</button>
+      </div>
+    </section>
+
+    <!-- LANDING -->
+    <section id="view-landing" class="view card" hidden aria-label="Start screen">
+      <div class="card__header">
+        <h1 class="card__title">Welcome</h1>
+        <p class="card__subtitle">Enter the participant ID you were given by the researcher.</p>
+      </div>
+      <div class="card__body">
+        <div class="field">
+          <label class="field__label" for="participantId">Participant ID</label>
+          <input id="participantId" class="field__input" type="text" inputmode="text"
+            maxlength="32" placeholder="e.g. 03-12345" autocomplete="off" data-autofocus>
+          <span class="field__hint">Format: number, hyphen, suffix (for example 03-12345 or 202-67890).</span>
+        </div>
+
+        <!-- Enrollment status, filled in at runtime. -->
+        <div id="enrollmentStatus" class="enrollment-status" hidden>
+          <p class="hint-sm" id="enrollmentStatusLine"></p>
+          <p class="hint-sm" id="enrollmentLocationLine"></p>
+        </div>
+
+        <p class="hint-sm" id="inPersonHint" hidden>
+          This session must be completed in the lab.
+          If you are not currently at the lab, please contact your researcher.
+        </p>
+        <p class="warn" id="landingWarn" hidden></p>
+      </div>
+      <div class="card__footer">
+        <button id="startBtn" class="btn btn--primary btn--full">Continue</button>
+        <p class="hint-enter">Press <kbd>Enter</kbd> to continue.</p>
+      </div>
+    </section>
+
+    <!-- The trial UI is rendered by practice-engine.mountSessionShell into the
+         dedicated session pages (study-sessionN.html, pretest.html,
+         posttest-delayed.html). -->
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    Created by Joshua Maligaya &middot; QCER Lab, Queen's University
+  </footer>
+
+  <!-- ═══ THEME TOGGLE ═══ -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">💡</button>
+
+  <script>
+    (function() {
+      var root = document.documentElement;
+      var btn  = document.getElementById('themeToggle');
+      var stored = localStorage.getItem('cfc-theme');
+      var dark = stored === 'dark'; // Default: light mode; dark only if user explicitly chose it
+      function apply() {
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        btn.textContent = dark ? '💡' : '🌙';
+      }
+      apply();
+      btn.addEventListener('click', function() {
+        dark = !dark;
+        localStorage.setItem('cfc-theme', dark ? 'dark' : 'light');
+        apply();
+      });
+    })();
+  </script>
+
+  <!-- Landing page handler. -->
+  <script type="module" src="landing-v2.js"></script>
+  <!-- ═══ INSTRUCTIONS CONTENT TEMPLATE ═══ -->
+  <!-- Cloned at runtime into the landing-panel body, the inline session-intro
+       dropdown, and the full-page view-instructions card. This template holds
+       the wording for all three. -->
+  <template id="instructionsContentTpl">
+    <div class="instructions-content">
+      <h2 class="instructions-content__heading">Study Instructions</h2>
+
+      <p>Thank you for taking part. This study runs over about a week and a half. Please read this page before you begin.</p>
+
+      <h3 class="instructions-content__section">What you will do</h3>
+
+      <p>You will work with two sets of organic chemistry terms. One set will be practiced across four days, with one short session per day. The other set will all be practiced on Day 4, in four short blocks back to back. Which set goes with which schedule is determined by your participant ID. Both sets are tested at the end.</p>
+
+      <ol class="instructions-steps">
+        <li>
+          <strong>Practice sessions 1 to 3 (Days 1, 2, 3, at home).</strong>
+          12 questions per day, with feedback after each answer. About 6 to 8 minutes each. Each session unlocks the day after the previous one.
+        </li>
+        <li>
+          <strong>Day 4 (at home).</strong>
+          Your final 12 practice questions on the first set, then four blocks of 12 practice questions on the second set. About 40 to 55 minutes in total.
+        </li>
+        <li>
+          <strong>Delayed test (about one week later, in the lab, with the eye-tracker).</strong>
+          36 questions covering both sets. No feedback is shown. About 20 minutes.
+        </li>
+      </ol>
+
+      <h3 class="instructions-content__section">Two question formats</h3>
+
+      <p><strong>Fill-in-the-blank.</strong> You see a chemical structure and a partial name with one blank, for example "3-______hexane". You type only the missing word, such as "methyl". Most questions in the study use this format.</p>
+
+      <p><strong>Full name.</strong> Used only on the delayed test. You see a chemical structure and an empty answer box. You type the complete IUPAC name from scratch.</p>
+
+      <h3 class="instructions-content__section">Feedback</h3>
+
+      <p>During the practice sessions (Days 1 to 4), you will see whether each answer is correct. If it is wrong, a short reminder about the naming rule appears. Please take a moment to read it.</p>
+
+      <p>During the delayed test, no feedback is shown. It measures what you know without prompting.</p>
+
+      <h3 class="instructions-content__section">Timer and answering tips</h3>
+      <div class="instructions-tips">
+        <div class="instructions-tips__col">
+          <h4 class="instructions-tips__heading">The 20-second timer</h4>
+          <p>Each question has a 20-second time limit. A countdown shows in the answer area.</p>
+          <p class="instructions-tips__callout">
+            <strong>Tip.</strong> Respond as quickly as you can with what comes to mind. If you do not know, that is okay. Make your best guess and move on. Do not consult notes or study materials.
+          </p>
+        </div>
+        <div class="instructions-tips__col">
+          <h4 class="instructions-tips__heading">Answer tips</h4>
+          <ul class="instructions-tips__list">
+            <li><strong>Capitalisation does not matter.</strong> Both <code>methyl</code> and <code>METHYL</code> count.</li>
+            <li><strong>Hyphens do not matter.</strong> <code>iso-butyl</code> and <code>iso butyl</code> both count.</li>
+            <li><strong>Type only the missing word</strong> on fill-in-the-blank questions. The rest of the name is given.</li>
+            <li><strong>Type the full IUPAC name</strong> on full-name questions (only on the delayed test).</li>
+            <li><strong>Do not consult notes or study materials</strong> during or between sessions. Once practice begins, rely only on memory.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="instructions-content__section">How to use the app</h3>
+      <ol class="instructions-steps">
+        <li>
+          <strong>Enter your participant ID</strong> on the start screen. Press <em>Continue</em>. You will be sent to the right session automatically.
+        </li>
+        <li>
+          <strong>Read the question.</strong>
+          A chemical structure appears at the top, with a prompt below.
+        </li>
+        <li>
+          <strong>Submit your answer.</strong>
+          Type and press <em>Submit</em> (or <kbd>Enter</kbd>). Always answer from memory.
+        </li>
+        <li>
+          <strong>Review feedback</strong> if you are in a practice session. Otherwise the next question appears immediately.
+        </li>
+        <li>
+          <strong>Continue.</strong>
+          Press <em>Next</em> (or <kbd>Enter</kbd>) to move on. At the end of the session your results are uploaded automatically. Wait for the confirmation before closing the tab.
+        </li>
+      </ol>
+
+      <p class="instructions-content__footnote">
+        Please do not share these instructions or discuss study materials with other potential participants.
+      </p>
+    </div>
+  </template>
+
+  <!-- Tester tools: self-gating; renders only when the URL carries a DEV test id. Invisible to real participants. -->
+  <script type="module" src="tester-tools.js"></script>
+</body>
+</html>

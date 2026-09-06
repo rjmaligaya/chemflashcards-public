@@ -1,0 +1,37 @@
+item_id,group,qtype,session,target_set,feature,full_name
+C1-S1-iodo-full,C-1,Q-full,1,1,iodo,iodoethane
+C1-S2-amide-full,C-1,Q-full,2,3,amide,pentanamide
+C1-S2-hex-full,C-1,Q-full,2,4,hex,hex-3-ene
+C1-S2-ol-full,C-1,Q-full,2,3,ol,cyclopentanol
+C1-S3-al-full,C-1,Q-full,3,2,al,propanal
+C1-S3-fluoro-full,C-1,Q-full,3,4,fluoro,1-fluorohexane
+C1-S4-al-blank,C-1,Q-blank,4,4,al,hexanal
+C1-S4-amide-blank,C-1,Q-blank,4,1,amide,ethanamide
+C1-S4-ene-blank,C-1,Q-blank,4,4,ene,hex-2-ene
+C1-S4-eth-blank,C-1,Q-blank,4,3,eth,ethanol
+C1-S4-fluoro-blank,C-1,Q-blank,4,3,fluoro,2-fluoropropane
+C1-S4-hex-blank,C-1,Q-blank,4,2,hex,hexane
+C1-S4-iodo-blank,C-1,Q-blank,4,2,iodo,2-iodopropane
+C1-S4-ol-blank,C-1,Q-blank,4,2,ol,propan-2-ol
+C1-S4-pent-blank,C-1,Q-blank,4,4,pent,cyclopentane
+C1-S4-prop-blank,C-1,Q-blank,4,3,prop,propane
+C1-S4-pyridine-blank,C-1,Q-blank,4,1,pyridine,pyridine
+C1-S4-pyrrole-blank,C-1,Q-blank,4,1,pyrrole,pyrrole
+C2-S1-one-full,C-2,Q-full,1,1,one,heptan-2-one
+C2-S2-chloro-full,C-2,Q-full,2,4,chloro,1-chloroheptane
+C2-S2-oate-full,C-2,Q-full,2,3,oate,methyl octanoate
+C2-S3-bromo-full,C-2,Q-full,3,2,bromo,2-bromobutane
+C2-S3-iso-full,C-2,Q-full,3,4,iso,iso-butyl bromide
+C2-S3-tert-full,C-2,Q-full,3,3,tert,tert-butyl chloride
+C2-S4-benzene-blank,C-2,Q-blank,4,4,benzene,bromobenzene
+C2-S4-bromo-blank,C-2,Q-blank,4,1,bromo,bromobenzene
+C2-S4-but-blank,C-2,Q-blank,4,4,but,3-methylbutane
+C2-S4-chloro-blank,C-2,Q-blank,4,3,chloro,2-chlorobutane
+C2-S4-hept-blank,C-2,Q-blank,4,4,hept,1-chloroheptane
+C2-S4-iso-blank,C-2,Q-blank,4,1,iso,iso-butyl benzene
+C2-S4-methyl-blank,C-2,Q-blank,4,2,methyl,3-methylheptane
+C2-S4-oate-blank,C-2,Q-blank,4,2,oate,methyl ethanoate
+C2-S4-oct-blank,C-2,Q-blank,4,3,oct,3-bromooctane
+C2-S4-one-blank,C-2,Q-blank,4,2,one,butan-2-one
+C2-S4-tert-blank,C-2,Q-blank,4,1,tert,tert-butyl benzene
+C2-S4-toluene-blank,C-2,Q-blank,4,3,toluene,toluene
